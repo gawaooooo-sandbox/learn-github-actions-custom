@@ -47,5 +47,4 @@ runs:
             .addTable(parametersTable)
             .write()
       env:
-        # INPUTS: ${{ inputs.workflow-inputs }}
-        INPUTS: ${{ toJSON(inputs.workflow-inputs) }}
+        INPUTS: ${{ fromJSON(inputs.workflow-inputs) }}
