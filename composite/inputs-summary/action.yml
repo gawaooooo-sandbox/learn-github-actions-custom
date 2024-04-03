@@ -7,7 +7,6 @@ inputs:
     description: |
       The inputs provided to the workflow.
       Passing the inputs context wrapped in a `toJSON` expression.
-      For example: `${{ toJSON(inputs) }}`
     required: true
 
 runs:
