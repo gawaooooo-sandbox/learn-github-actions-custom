@@ -6,7 +6,7 @@ inputs:
   workflow-inputs:
     description: |
       The inputs provided to the workflow. This should be a JSON string.
-      Example: workflow-inputs: ${{ toJson(inputs) }}
+      Example: "workflow-inputs: ${{ toJson(inputs) }}"
     required: true
 
 runs:
