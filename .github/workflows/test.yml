@@ -25,7 +25,7 @@ jobs:
       - name: Setup
         id: workflow-inputs
         run: |
-          inputs={"foo":"bar","hoge":"fuga"}
+          inputs='{"foo":"bar","hoge":"fuga"}'
           echo "inputs=$inputs" >> "$GITHUB_OUTPUT"
 
       - name: Exercise
