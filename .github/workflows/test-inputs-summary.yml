@@ -31,7 +31,7 @@ jobs:
       - name: Output
         run: |
           echo "${{ steps.workflow-inputs.outputs.inputs }}"
-          echo "${{ toJSON(steps.workflow-inputs.outputs.inputs) }}"
+          echo "${{ fromJSON(steps.workflow-inputs.outputs.inputs) }}"
 
       - name: Exercise
         uses: ./composite/inputs-summary
