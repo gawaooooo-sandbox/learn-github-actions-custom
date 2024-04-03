@@ -5,6 +5,8 @@ description: |
 inputs:
   workflow-inputs:
     description: |
+      # inputs context を `toJSON` 式 で
+
       The inputs provided to the workflow. This should be a JSON string.
       For example: `toJSON(inputs)`
     required: true
@@ -45,4 +47,5 @@ runs:
             .addTable(parametersTable)
             .write()
       env:
-        INPUTS: ${{ inputs.workflow-inputs }}
+        # INPUTS: ${{ inputs.workflow-inputs }}
+        INPUTS: ${{ toJSON(inputs.workflow-inputs) }}
