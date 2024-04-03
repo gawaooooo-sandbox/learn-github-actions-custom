@@ -18,6 +18,7 @@ runs:
         script: |
           const { INPUTS: _inputs } = process.env;
           console.log(typeof _inputs);
+          console.log(_inputs);
 
           let inputs;
           // _inputs の型がstringの場合はJSON.parseする
