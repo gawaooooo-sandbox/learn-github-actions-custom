@@ -36,4 +36,5 @@ jobs:
       - name: Exercise
         uses: ./composite/inputs-summary
         with:
-          workflow-inputs: ${{ toJSON(steps.workflow-inputs.outputs.inputs) }}
+          # workflow-inputs: ${{ toJSON(steps.workflow-inputs.outputs.inputs) }}
+          workflow-inputs: ${{ steps.workflow-inputs.outputs.inputs }}
