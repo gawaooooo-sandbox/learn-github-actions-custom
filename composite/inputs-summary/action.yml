@@ -5,10 +5,9 @@ description: |
 inputs:
   workflow-inputs:
     description: |
-      # inputs context を `toJSON` 式 で
-
-      The inputs provided to the workflow. This should be a JSON string.
-      For example: `toJSON(inputs)`
+      The inputs provided to the workflow.
+      Passing the inputs context wrapped in a `toJSON` expression.
+      For example: `\$\{\{ toJSON(inputs) \}\}`
     required: true
 
 runs:
