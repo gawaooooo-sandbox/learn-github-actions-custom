@@ -9,6 +9,9 @@ on:
 defaults:
   run:
     shell: bash
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -22,15 +25,16 @@ jobs:
       - name: Setup
         id: workflow-inputs
         run: |
-          inputs={"foo":"bar","hoge":"fuga"}
+          inputs='{"foo":"bar","hoge":"fuga"}'
           echo "inputs=$inputs" >> "$GITHUB_OUTPUT"
+
+      - name: Output
+        run: |
+          echo "${{ steps.workflow-inputs.outputs.inputs }}"
+          echo "${{ fromJSON(steps.workflow-inputs.outputs.inputs) }}"
 
       - name: Exercise
         uses: ./composite/inputs-summary
         with:
-          workflow-inputs: ${{ toJSON(steps.workflow-inputs.outputs.inputs) }}
-
-      - name: Verify
-        run: |
-          cat "$GITHUB_OUTPUT"
-          cat "$GITHUB_STEP_SUMMARY"
+          # workflow-inputs: ${{ toJSON(steps.workflow-inputs.outputs.inputs) }}
+          workflow-inputs: ${{ steps.workflow-inputs.outputs.inputs }}

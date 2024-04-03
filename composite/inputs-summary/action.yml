@@ -5,8 +5,8 @@ description: |
 inputs:
   workflow-inputs:
     description: |
-      The inputs provided to the workflow. This should be a JSON string.
-      Example: "workflow-inputs: ${{ toJson(inputs) }}"
+      The inputs provided to the workflow.
+      Passing the inputs context wrapped in a `toJSON` expression.
     required: true
 
 runs:
@@ -16,7 +16,19 @@ runs:
       uses: actions/github-script@v7
       with:
         script: |
-          const inputs = JSON.parse(process.env.INPUTS);
+          const { INPUTS: _inputs } = process.env;
+          console.log(typeof _inputs);
+          console.log(_inputs);
+
+          let inputs;
+          // _inputs の型がstringの場合はJSON.parseする
+          if (typeof _inputs === 'string') {
+            inputs = JSON.parse(_inputs);
+          } else {
+            inputs = _inputs;
+          }
+
+          // const inputs = JSON.parse(process.env.INPUTS);
           console.log(inputs);
 
           const parametersTable = [

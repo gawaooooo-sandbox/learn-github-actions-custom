@@ -1,0 +1,29 @@
+name: Generate actions docs
+run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
+
+on:
+  pull_request:
+    paths:
+      - "composite/**/action.yml"
+permissions:
+  contents: write
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs:
+    strategy:
+      matrix:
+        yaml-file: [composite/inputs-summary/action.yml]
+        include:
+          - yaml-file: composite/inputs-summary/action.yml
+            markdown-file: docs/inputs-summary.md
+    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/reusable-make-wf-docs.yml@main
+    with:
+      yaml-file: ${{ matrix.yaml-file }}
+      markdown-file: ${{ matrix.markdown-file }}
+      ref: ${{ github.head_ref }}
