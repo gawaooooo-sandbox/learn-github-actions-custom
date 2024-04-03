@@ -1,0 +1,36 @@
+name: Test (inputs-summary)
+run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
+
+on:
+  pull_request:
+    paths:
+      - "composite/inputs-summary/**"
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        id: workflow-inputs
+        run: |
+          inputs={"foo":"bar","hoge":"fuga"}
+          echo "inputs=$inputs" >> "$GITHUB_OUTPUT"
+
+      - name: Exercise
+        uses: ./composite/inputs-summary
+        with:
+          workflow-inputs: ${{ toJSON(steps.workflow-inputs.outputs.inputs) }}
+
+      - name: Verify
+        run: |
+          cat "$GITHUB_OUTPUT"
+          cat "$GITHUB_STEP_SUMMARY"
