@@ -30,15 +30,10 @@ jobs:
 
       - name: Output
         run: |
-          cat ${{ steps.workflow-inputs.outputs.inputs }}
-          cat ${{ toJSON(steps.workflow-inputs.outputs.inputs) }}
+          cat "${{ steps.workflow-inputs.outputs.inputs }}"
+          cat "${{ toJSON(steps.workflow-inputs.outputs.inputs) }}"
 
       - name: Exercise
         uses: ./composite/inputs-summary
         with:
           workflow-inputs: ${{ toJSON(steps.workflow-inputs.outputs.inputs) }}
-
-      # - name: Verify
-      #   run: |
-      #     cat "$GITHUB_OUTPUT"
-      #     cat "$GITHUB_STEP_SUMMARY"
