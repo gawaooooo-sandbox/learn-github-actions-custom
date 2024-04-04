@@ -31,7 +31,7 @@ jobs:
       - name: Exercise
         uses: ./composite/node-npm-setup
         with:
-          skip-checkout: "true"
+          # skip-checkout: "true"
           npm-install-command: "install"
           npm-install-options: "--ignore-scripts"
 
