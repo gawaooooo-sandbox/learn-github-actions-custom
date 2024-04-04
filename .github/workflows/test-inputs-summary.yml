@@ -30,7 +30,7 @@ jobs:
 
           echo '["hoge","fuga"]' | jq -c
           list=$(echo '["hoge","fuga"]' | jq -c)
-          echo "value=${list}" >> $GITHUB_OUTPUT
+          echo "value=${list}" >> "$GITHUB_OUTPUT"
 
       - name: Output
         run: |
