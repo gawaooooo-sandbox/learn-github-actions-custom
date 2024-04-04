@@ -55,9 +55,16 @@ inputs:
     required: false
     # TODO: github.ref?
     default: ${{ github.head_ref }}
-  install-options:
+  npm-install-command:
     description: |
-      Optional input to set the options to pass to the `npm ci` command.
+      Optional input to set the npm command to run.
+      `npm ci` -> `ci`
+      `npm install` -> `install`
+    required: false
+    default: "ci"
+  npm-install-options:
+    description: |
+      Optional input to set the options to pass to the `npm ci` or `npm install` command.
       e.g. `--ignore-scripts --no-audit`
     required: false
 
@@ -80,7 +87,7 @@ runs:
         scope: ${{ inputs.npm-scope }}
 
     - name: Install dependencies
-      run: npm ci ${{ inputs.install-options }}
+      run: npm ${{ inputs.npm-install-command}} ${{ inputs.npm-install-options }}
       shell: bash
       env:
         # CI上では Husky を install しない

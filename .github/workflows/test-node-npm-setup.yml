@@ -26,13 +26,14 @@ jobs:
       - name: Setup
         run: |
           pwd
-          ls -la ${{ runner.temp }}
+          ls -la
 
       - name: Exercise
         uses: ./composite/node-npm-setup
         with:
           skip-checkout: "true"
-          install-options: "--ignore-scripts"
+          npm-install-command: "install"
+          npm-install-options: "--ignore-scripts"
 
       - name: Verify
         run: echo "Verify"
