@@ -20,10 +20,6 @@ runs:
           console.log(typeof _inputs);
           console.log(_inputs);
 
-          const test = ${{ toJSON(_inputs) }}
-          console.log('---- toJSON ----');
-          console.log(test);
-
           let inputs;
           // _inputs の型がstringの場合はJSON.parseする
           if (typeof _inputs === 'string') {
