@@ -92,5 +92,5 @@ runs:
       env:
         # CI上では Husky を install しない
         # https://typicode.github.io/husky/how-to.html#ci-server-and-docker
-        HUSKY: "0"
+        HUSKY: ${{ fromJSON("0") }}
         NODE_AUTH_TOKEN: ${{ inputs.node-auth-token }}
