@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - "composite/inputs-summary/**"
+      - ".github/workflows/test-*.yml"
   workflow_dispatch:
 defaults:
   run:
