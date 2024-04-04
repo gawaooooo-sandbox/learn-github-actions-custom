@@ -24,7 +24,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup
-        run: echo "Setup"
+        run: |
+          pwd
+          ls -la
 
       - name: Exercise
         uses: ./composite/node-npm-setup
