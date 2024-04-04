@@ -67,11 +67,17 @@ inputs:
       Optional input to set the options to pass to the `npm ci` or `npm install` command.
       e.g. `--ignore-scripts --no-audit`
     required: false
+  create-inputs-summary:
+    description: |
+      Optional input to create a summary of the inputs used in the workflow.
+    required: false
+    default: "false"
 
 runs:
   using: composite
   steps:
-    - name: Inputs summary
+    - name: Create inputs summary
+      if: ${{ inputs.create-inputs-summary != 'false' }}
       uses: gawaooooo-sandbox/learn-github-actions-custom/composite/inputs-summary@main
       with:
         workflow-inputs: ${{ toJson(inputs) }}
