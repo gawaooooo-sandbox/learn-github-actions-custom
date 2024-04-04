@@ -32,6 +32,7 @@ jobs:
         uses: ./composite/node-npm-setup
         with:
           skip-checkout: "true"
+          install-options: "--ignore-scripts"
 
       - name: Verify
         run: echo "Verify"
