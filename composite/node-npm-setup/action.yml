@@ -71,6 +71,11 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Inputs summary
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/inputs-summary@main
+      with:
+        workflow-inputs: ${{ toJson(inputs) }}
+
     - name: Checkout code
       if: ${{ inputs.skip-checkout == 'false' }}
       uses: actions/checkout@v4
