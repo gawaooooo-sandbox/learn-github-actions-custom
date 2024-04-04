@@ -33,7 +33,8 @@ jobs:
         with:
           skip-checkout: "true"
           npm-install-command: "install"
-          npm-install-options: "--ignore-scripts"
+          # npm-install-options: "--ignore-scripts"
 
       - name: Verify
-        run: echo "Verify"
+        run: |
+          ls -la
