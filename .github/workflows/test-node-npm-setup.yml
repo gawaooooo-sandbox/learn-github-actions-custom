@@ -30,6 +30,8 @@ jobs:
 
       - name: Exercise
         uses: ./composite/node-npm-setup
+        with:
+          skip-checkout: "true"
 
       - name: Verify
         run: echo "Verify"
