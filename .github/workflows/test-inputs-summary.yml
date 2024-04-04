@@ -26,24 +26,20 @@ jobs:
       - name: Setup
         id: workflow-inputs
         run: |
-          inputs='{"foo":"bar","hoge":"fuga"}'
-          echo "inputs=$inputs" >> "$GITHUB_OUTPUT"
-
-          echo '["hoge","fuga"]' | jq -c
-          list=$(echo '["hoge","fuga"]' | jq -c)
-          echo "value=${list}" >> "$GITHUB_OUTPUT"
+          inputs=$(echo '{"foo":"bar","hoge":"fuga"}' | jq -c)
+          echo "inputs=${inputs}" >> "$GITHUB_OUTPUT"
 
       - name: Output
         run: |
+          echo "---- steps.workflow-inputs.outputs.inputs ----"
           echo "${{ steps.workflow-inputs.outputs.inputs }}"
+          echo "---- steps.workflow-inputs.outputs.inputs (fromJSON) ----"
           echo "${{ fromJSON(steps.workflow-inputs.outputs.inputs) }}"
-          echo "${{ steps.workflow-inputs.outputs.value }}"
-          echo "${{ toJSON(steps.workflow-inputs.outputs.value) }}"
-          echo "${{ fromJSON(steps.workflow-inputs.outputs.value) }}"
+          echo "---- steps.workflow-inputs.outputs.inputs (toJSON) ----"
+          echo "${{ toJSON(steps.workflow-inputs.outputs.inputs) }}"
 
       - name: Exercise
         uses: ./composite/inputs-summary
         with:
           # workflow-inputs: ${{ toJSON(steps.workflow-inputs.outputs.inputs) }}
-          # workflow-inputs: ${{ steps.workflow-inputs.outputs.inputs }}
-          workflow-inputs: ${{ steps.workflow-inputs.outputs.value }}
+          workflow-inputs: ${{ steps.workflow-inputs.outputs.inputs }}
