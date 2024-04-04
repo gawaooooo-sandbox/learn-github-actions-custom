@@ -1,0 +1,33 @@
+name: Test (node-npm-setup)
+run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
+
+on:
+  pull_request:
+    paths:
+      - "composite/node-npm-setup/action.yml"
+      - ".github/workflows/test-node-npm-setup.yml"
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        run: echo "Setup"
+
+      - name: Exercise
+        uses: ./composite/node-npm-setup
+
+      - name: Verify
+        run: echo "Verify"
