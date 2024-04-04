@@ -28,10 +28,17 @@ jobs:
           inputs='{"foo":"bar","hoge":"fuga"}'
           echo "inputs=$inputs" >> "$GITHUB_OUTPUT"
 
+          echo '["hoge","fuga"]' | jq -c
+          list=$(echo '["hoge","fuga"]' | jq -c)
+          echo "value=${list}" >> $GITHUB_OUTPUT
+
       - name: Output
         run: |
           echo "${{ steps.workflow-inputs.outputs.inputs }}"
           echo "${{ fromJSON(steps.workflow-inputs.outputs.inputs) }}"
+          echo "${{ steps.workflow-inputs.outputs.value }}"
+          echo "${{ toJSON(steps.workflow-inputs.outputs.value) }}"
+          echo "${{ fromJSON(steps.workflow-inputs.outputs.value) }}"
 
       - name: Exercise
         uses: ./composite/inputs-summary
