@@ -45,8 +45,8 @@ inputs:
     description: |
       Optional input to set the authentication token to use for the npm commands.
       The input syntax corresponds to the setup-node's one.
-      When using GitHub Packages, specify `${{ secrets.GITHUB_TOKEN }}`
-      When using npm, specify `${{ secrets.NPM_AUTH_TOKEN }}`
+      When using GitHub Packages, specify `secrets.GITHUB_TOKEN`
+      When using npm, specify `secrets.NPM_AUTH_TOKEN`
     required: false
   checkout-ref:
     description: |
