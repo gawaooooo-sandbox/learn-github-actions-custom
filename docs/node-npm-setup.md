@@ -12,6 +12,7 @@ Install dependencies using `npm ci`.
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
 | checkout-ref | <pre>Optional input to set the ref to checkout.<br>The input syntax corresponds to the actions/checkout's one.</pre> | `${{ github.head_ref }}` | no |
+| create-inputs-summary | <pre>Optional input to create a summary of the inputs used in the workflow.</pre> | `false` | no |
 | node-auth-token | <pre>Optional input to set the authentication token to use for the npm commands.<br>The input syntax corresponds to the setup-node's one.<br>When using GitHub Packages, specify `secrets.GITHUB_TOKEN`<br>When using npm, specify `secrets.NPM_AUTH_TOKEN`</pre> | n/a | no |
 | node-caching | <pre>Optional input to set up caching for the setup-node action.<br>The input syntax corresponds to the setup-node's one.<br>Set to an empty string if caching isn't needed.</pre> | `npm` | no |
 | node-version | <pre>Optional input to set the version of Node.js used to build the project.<br>The input syntax corresponds to the setup-node's one.</pre> | n/a | no |
