@@ -39,7 +39,7 @@ inputs:
       Optional input to set the scope to use for the npm commands.
       The input syntax corresponds to the setup-node's one.
       `cocone package` -> `@cocone`
-      GitHub Packages -> `'@${{ github.repository_owner }}'`
+      GitHub Packages -> `@owner` (use `github.repository_owner`)
     required: false
   node-auth-token:
     description: |
