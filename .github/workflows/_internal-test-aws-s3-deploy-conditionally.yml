@@ -36,6 +36,7 @@ jobs:
       - name: Verify
         run: |
           set -x
+          echo ${{ steps.deploy.outputs.s3-deploy-command }}
 
           expected_command="aws s3 sync ./docs s3://my-bucket --delete --dryrun"
           if [ "$expected_command" == "${{ steps.deploy.outputs.s3-deploy-command }}" ]; then
