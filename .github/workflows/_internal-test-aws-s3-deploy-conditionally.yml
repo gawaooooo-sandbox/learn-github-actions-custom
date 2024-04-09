@@ -30,12 +30,14 @@ jobs:
           aws-region: "ap-northeast-1"
           aws-role-arn: ${{ secrets.AWS_ROLE_ARN }}
           environment: "development"
-          s3-sync-command: "./dist s3://my-bucket --delete --dryrun"
+          s3-sync-command: "./docs s3://my-bucket --delete --dryrun"
           enable-aws-deploy: "false"
 
       - name: Verify
         run: |
-          expected_command="aws s3 sync ./dist s3://my-bucket --delete --dryrun"
+          set -x
+
+          expected_command="aws s3 sync ./docs s3://my-bucket --delete --dryrun"
           if [ "$expected_command" == "${{ steps.deploy.outputs.s3-deploy-command }}" ]; then
             echo "Success: The S3 deploy command matches the expected command."
           else
