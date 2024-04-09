@@ -5,7 +5,7 @@ on:
   pull_request:
     paths:
       - "composite/inputs-summary/action.yml"
-      - ".github/workflows/test-inputs-summary.yml"
+      - ".github/workflows/_internal-test-inputs-summary.yml"
   workflow_dispatch:
 
 concurrency:

@@ -5,7 +5,7 @@ on:
   pull_request:
     paths:
       - "composite/node-npm-setup/action.yml"
-      - ".github/workflows/test-node-npm-setup.yml"
+      - ".github/workflows/_internal-test-node-npm-setup.yml"
   workflow_dispatch:
 
 concurrency:
