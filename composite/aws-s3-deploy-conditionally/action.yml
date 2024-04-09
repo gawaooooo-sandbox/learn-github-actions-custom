@@ -47,7 +47,7 @@ runs:
         set -x
 
         s3-deploy-command="aws s3 sync ${{ inputs.s3-sync-command }}"
-        echo "S3 Deploy Command: $s3-deploy-command"
+        # echo "S3 Deploy Command: $s3-deploy-command"
         # echo "s3-deploy-command=\"$s3-deploy-command\"" >> "$GITHUB_OUTPUT"
       shell: bash
 
