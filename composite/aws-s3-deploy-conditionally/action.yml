@@ -1,0 +1,65 @@
+name: AWS S3 Deploy Conditionally
+description: |
+  This action deploys files to an AWS S3 bucket conditionally.
+  The action uses the `aws-actions/configure-aws-credentials` action to configure AWS credentials.
+
+inputs:
+  aws-region:
+    description: |
+      "The AWS region where the S3 bucket is located."
+    required: false
+    default: "ap-northeast-1"
+
+  aws-role-arn:
+    description: |
+      "The AWS IAM role ARN to assume."
+    required: true
+
+  environment:
+    description: |
+      "The environment to deploy to."
+    required: true
+
+  s3-sync-command:
+    description: |
+      "The command to sync files to the S3 bucket."
+      e.g. "./dist s3://my-bucket --delete"
+    required: true
+
+  enable-aws-deploy:
+    description: |
+      "Whether to deploy to AWS S3."
+    required: false
+    default: "true"
+
+outputs:
+  s3-deploy-command:
+    description: |
+      "The command to sync files to the S3 bucket."
+    value: ${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup S3 deploy command
+      id: setup-s3-deploy-command
+      run: |
+        s3-deploy-command="aws s3 sync ${{ inputs.s3-sync-command }}"
+        echo "s3-deploy-command=${s3-deploy-command}" >> "${GITHUB_OUTPUT}"
+
+        echo "S3 Deploy Command: $s3-deploy-command"
+      shell: bash
+
+    - name: Setup AWS Credentials
+      if: ${{ fromJSON(inputs.enable-aws-deploy) }}
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ inputs.aws-role-arn }}
+        aws-region: ${{ inputs.aws-region }}
+
+    - name: Deploy to ${{ inputs.environment }} [${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}]
+      if: ${{ fromJSON(inputs.enable-aws-deploy) }}
+      run: |
+        set -x
+        eval "${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}"
+      shell: bash

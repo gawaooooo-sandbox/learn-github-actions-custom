@@ -1,0 +1,44 @@
+name: Test for aws-s3-deploy-conditionally
+run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
+
+on:
+  pull_request:
+    paths:
+      - "composite/aws-s3-deploy-conditionally/action.yml"
+      - ".github/workflows/_internal-test-aws-s3-deploy-conditionally.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: test-s3-deploy-conditionally-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test-aws-s3-deploy-conditionally:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Exercise
+        id: deploy
+        uses: ./composite/aws-s3-deploy-conditionally
+        with:
+          aws-region: "ap-northeast-1"
+          aws-role-arn: ${{ secrets.AWS_ROLE_ARN }}
+          environment: "development"
+          s3-sync-command: "./dist s3://my-bucket --delete --dryrun"
+          enable-aws-deploy: "false"
+
+      - name: Verify
+        run: |
+          expected_command="aws s3 sync ./dist s3://my-bucket --delete --dryrun"
+          if [ "$expected_command" == "${{ steps.deploy.outputs.s3-deploy-command }}" ]; then
+            echo "Success: The S3 deploy command matches the expected command."
+          else
+            echo "Failure: The S3 deploy command does not match the expected command."
+            exit 1
+          fi
