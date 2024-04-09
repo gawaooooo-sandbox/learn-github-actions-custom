@@ -1,0 +1,43 @@
+name: Test for setup-environment
+run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
+
+on:
+  pull_request:
+    paths:
+      - "composite/setup-environment/action.yml"
+      - ".github/workflows/_internal-test-setup-environment.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test-setup-env-action:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Exercise
+        uses: ./composite/setup-environment
+        with:
+          environments: '["TEST_URL=https://example.com", "API_KEY=abcdef12345", "SPACE_SEPARATED=one two three"]'
+
+      - name: Verify
+        run: |
+          echo "TEST_URL=$TEST_URL"
+          echo "API_KEY=$API_KEY"
+          echo "SPACE_SEPARATED=$SPACE_SEPARATED"
+          if [ -z "$TEST_URL" ] || [ -z "$API_KEY" ] || [ -z "$SPACE_SEPARATED" ]; then
+            echo "Error: Environment variables are not set correctly."
+            exit 1
+          else
+            echo "Success: Environment variables are set correctly."
+          fi

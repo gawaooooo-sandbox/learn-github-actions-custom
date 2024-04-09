@@ -22,12 +22,15 @@ jobs:
           [
             composite/inputs-summary/action.yml,
             composite/node-npm-setup/action.yml,
+            composite/setup-environment/action.yml,
           ]
         include:
           - yaml-file: composite/inputs-summary/action.yml
             markdown-file: docs/inputs-summary.md
           - yaml-file: composite/node-npm-setup/action.yml
             markdown-file: docs/node-npm-setup.md
+          - yaml-file: composite/setup-environment/action.yml
+            markdown-file: docs/setup-environment.md
     uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/reusable-make-wf-docs.yml@main
     with:
       yaml-file: ${{ matrix.yaml-file }}

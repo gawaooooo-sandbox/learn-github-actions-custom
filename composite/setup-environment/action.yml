@@ -1,0 +1,41 @@
+name: Setup Environment Variables
+description: |
+  This action sets up environment variables for the project.
+  Set environment variables using the `environments` input.
+  Environment variables are set in the format `KEY=VALUE`.
+  For example, `BASE_URL=http://example.com`.
+  The input `environments` is a JSON array of environment variables.
+
+inputs:
+  environments:
+    description: |
+      Required input to set the environment variables.
+      Environment variables in json array (e.g., ["BASE_URL=http://example.com", "SERVICE=app"])
+    required: true
+    default: "[]"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Validate input environment values
+      run: |
+        set -e
+        if ! echo '${{ inputs.environments }}' | jq '.' > /dev/null; then
+          echo "Error: The input 'environments' is not a valid JSON array."
+          exit 1
+        fi
+      shell: bash
+
+    - name: Setup environment variables
+      run: |
+        set -x
+        set -e  # 任意のコマンドが非ゼロステータスで終了した場合にスクリプトを終了させる
+        echo '${{ inputs.environments }}' | jq -r '.[]' | while IFS= read -r line; do
+          IFS='=' read -r key value <<< "$line"
+          if [ -z "$key" ] || [ -z "$value" ]; then
+            echo "Error: Environment variable format is incorrect: $line" >&2
+            exit 1
+          fi
+          echo "$key=\"$value\"" >> "$GITHUB_ENV"
+        done
+      shell: bash
