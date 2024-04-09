@@ -1,11 +1,11 @@
-name: Test for setup-environment
+name: Test for setup-environment-variables
 run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
 
 on:
   pull_request:
     paths:
-      - "composite/setup-environment/action.yml"
-      - ".github/workflows/_internal-test-setup-environment.yml"
+      - "composite/setup-environment-variables/action.yml"
+      - ".github/workflows/_internal-test-setup-environment-variables.yml"
   workflow_dispatch:
 
 concurrency:
@@ -26,9 +26,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Exercise
-        uses: ./composite/setup-environment
+        uses: ./composite/setup-environment-variables
         with:
-          environments: '["TEST_URL=https://example.com", "API_KEY=abcdef12345", "SPACE_SEPARATED=one two three"]'
+          environment-variables: '["TEST_URL=https://example.com", "API_KEY=abcdef12345", "SPACE_SEPARATED=one two three"]'
 
       - name: Verify
         run: |

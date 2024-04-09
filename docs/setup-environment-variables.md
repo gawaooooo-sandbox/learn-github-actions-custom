@@ -1,4 +1,4 @@
-# setup-environment
+# setup-environment-variables
 
 <!-- actdocs start -->
 
@@ -14,7 +14,7 @@ The input `environments` is a JSON array of environment variables.
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| environments | <pre>Required input to set the environment variables.<br>Environment variables in json array (e.g., ["BASE_URL=http://example.com", "SERVICE=app"])</pre> | `[]` | yes |
+| environment-variables | <pre>Required input to set the environment variables.<br>Environment variables in json array (e.g., ["BASE_URL=http://example.com", "SERVICE=app"])</pre> | `[]` | yes |
 
 ## Outputs
 

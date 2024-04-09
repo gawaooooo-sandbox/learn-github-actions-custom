@@ -7,7 +7,7 @@ description: |
   The input `environments` is a JSON array of environment variables.
 
 inputs:
-  environments:
+  environment-variables:
     description: |
       Required input to set the environment variables.
       Environment variables in json array (e.g., ["BASE_URL=http://example.com", "SERVICE=app"])
@@ -20,7 +20,7 @@ runs:
     - name: Validate input environment values
       run: |
         set -e
-        if ! echo '${{ inputs.environments }}' | jq '.' > /dev/null; then
+        if ! echo '${{ inputs.environment-variables }}' | jq '.' > /dev/null; then
           echo "Error: The input 'environments' is not a valid JSON array."
           exit 1
         fi
@@ -30,7 +30,7 @@ runs:
       run: |
         set -x
         set -e  # 任意のコマンドが非ゼロステータスで終了した場合にスクリプトを終了させる
-        echo '${{ inputs.environments }}' | jq -r '.[]' | while IFS= read -r line; do
+        echo '${{ inputs.environment-variables }}' | jq -r '.[]' | while IFS= read -r line; do
           IFS='=' read -r key value <<< "$line"
           if [ -z "$key" ] || [ -z "$value" ]; then
             echo "Error: Environment variable format is incorrect: $line" >&2
