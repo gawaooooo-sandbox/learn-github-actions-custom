@@ -1,4 +1,4 @@
-name: Test (inputs-summary)
+name: Test for inputs-summary
 run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
 
 on:
@@ -7,12 +7,14 @@ on:
       - "composite/inputs-summary/action.yml"
       - ".github/workflows/test-inputs-summary.yml"
   workflow_dispatch:
+
+concurrency:
+  group: test-inputs-summary-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 defaults:
   run:
     shell: bash
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   test:

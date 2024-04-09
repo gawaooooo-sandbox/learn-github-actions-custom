@@ -1,4 +1,4 @@
-name: Test (node-npm-setup)
+name: Test for node-npm-setup
 run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
 
 on:
@@ -7,12 +7,14 @@ on:
       - "composite/node-npm-setup/action.yml"
       - ".github/workflows/test-node-npm-setup.yml"
   workflow_dispatch:
-defaults:
-  run:
-    shell: bash
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   test:
