@@ -12,12 +12,14 @@ The input `environments` is a JSON array of environment variables.
 
 ## Inputs
 
-| Name         | Description                                                                                                                                               | Default | Required |
-| :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :------: |
-| environments | <pre>Required input to set the environment variables.<br>Environment variables in json array (e.g., ["BASE_URL=http://example.com", "SERVICE=app"])</pre> | `[]`    |   yes    |
+| Name | Description | Default | Required |
+| :--- | :---------- | :------ | :------: |
+| environment-variables | <pre>Required input to set the environment variables.<br>Environment variables in json array (e.g., ["BASE_URL=http://example.com", "SERVICE=app"])</pre> | `[]` | yes |
 
 ## Outputs
 
 N/A
 
 <!-- actdocs end -->
+
+
