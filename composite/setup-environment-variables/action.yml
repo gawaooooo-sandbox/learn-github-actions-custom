@@ -7,7 +7,7 @@ description: |
   The input `environments` is a JSON array of environment variables.
 
 inputs:
-  environments:
+  environment-variables:
     description: |
       Required input to set the environment variables.
       Environment variables in json array (e.g., ["BASE_URL=http://example.com", "SERVICE=app"])
