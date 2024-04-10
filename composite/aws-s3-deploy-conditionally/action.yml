@@ -59,7 +59,7 @@ runs:
         aws-region: ${{ inputs.aws-region }}
 
     - name: Deploy to ${{ inputs.environment }} [${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}]
-      if: ${{ fromJSON(inputs.enable-aws-deploy) }}
+      # if: ${{ fromJSON(inputs.enable-aws-deploy) }}
       run: |
         set -x
         eval "${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}"
