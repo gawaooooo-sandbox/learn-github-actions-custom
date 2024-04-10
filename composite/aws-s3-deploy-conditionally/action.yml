@@ -44,10 +44,8 @@ runs:
     - name: Setup S3 deploy command [${{ inputs.s3-sync-command }}]
       id: setup-s3-deploy-command
       run: |
-        set -e
         set -x
 
-        echo ${{ inputs.s3-sync-command }}
         echo "s3-deploy-command=aws s3 sync ${{ inputs.s3-sync-command }}" >> "$GITHUB_OUTPUT"
       shell: bash
 
@@ -58,11 +56,11 @@ runs:
         role-to-assume: ${{ inputs.aws-role-arn }}
         aws-region: ${{ inputs.aws-region }}
 
-    - name: Deploy to ${{ inputs.environment }} [${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}]
-      # if: ${{ fromJSON(inputs.enable-aws-deploy) }}
+    - name: Deploy to ${{ inputs.environment }} [aws s3 sync ${{ inputs.s3-sync-command }}]
+      if: ${{ fromJSON(inputs.enable-aws-deploy) }}
       run: |
         set -x
 
-        echo "Deploying to ${{ inputs.environment }} [${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}]"
-        eval "${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}"
+        echo "Deploying to ${{ inputs.environment }} [aws s3 sync ${{ inputs.s3-sync-command}}]]"
+        aws s3 sync ${{ inputs.s3-sync-command }}
       shell: bash
