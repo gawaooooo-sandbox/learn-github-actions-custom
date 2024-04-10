@@ -62,5 +62,7 @@ runs:
       # if: ${{ fromJSON(inputs.enable-aws-deploy) }}
       run: |
         set -x
+
+        echo "Deploying to ${{ inputs.environment }} [${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}]"
         eval "${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}"
       shell: bash
