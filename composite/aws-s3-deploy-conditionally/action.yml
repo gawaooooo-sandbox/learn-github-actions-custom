@@ -48,8 +48,8 @@ runs:
         set -x
 
         echo ${{ inputs.s3-sync-command }}
-        s3-deploy-command="aws s3 sync ${{ inputs.s3-sync-command }}"
-        echo "S3 Deploy Command: $s3-deploy-command"
+        # s3-deploy-command="aws s3 sync ${{ inputs.s3-sync-command }}"
+        # echo "S3 Deploy Command: $s3-deploy-command"
 
         # s3-deploy-command="aws s3 sync ${{ inputs.s3-sync-command }}"
         # echo "S3 Deploy Command: $s3-deploy-command"
