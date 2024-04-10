@@ -41,13 +41,16 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Setup S3 deploy command
+    - name: Setup S3 deploy command [${{ inputs.s3-sync-command }}]
       id: setup-s3-deploy-command
       run: |
         set -e
         set -x
 
         echo ${{ inputs.s3-sync-command }}
+
+        echo "s3-deploy-command=aws s3 sync ${{ inputs.s3-sync-command }}" >> "$GITHUB_OUTPUT"
+
         # s3-deploy-command="aws s3 sync ${{ inputs.s3-sync-command }}"
         # echo "S3 Deploy Command: $s3-deploy-command"
 
