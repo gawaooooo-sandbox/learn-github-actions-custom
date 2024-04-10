@@ -30,8 +30,8 @@ jobs:
           aws-region: "ap-northeast-1"
           aws-role-arn: ${{ secrets.AWS_ROLE_ARN }}
           environment: "development"
-          # s3-sync-command: "./docs s3://my-bucket --delete --dryrun"
-          s3-sync-command: "test"
+          s3-sync-command: "./docs s3://my-bucket --delete --dryrun"
+          # s3-sync-command: "test"
           enable-aws-deploy: "false"
 
       - name: Verify
