@@ -37,8 +37,11 @@ runs:
           ];
 
           for ([key, value] of Object.entries(inputs)) {
-          console.log(key, value);
-            parametersTable.push([key, value])
+            console.log(key, value);
+
+            // booleanの場合は値を文字列に変換する
+            const valueStr = typeof value === 'boolean' ? value.toString() : value;
+            parametersTable.push([key, valueStr])
           }
 
           await core.summary
