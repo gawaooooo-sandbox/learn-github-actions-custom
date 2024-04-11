@@ -37,7 +37,9 @@ runs:
           ];
 
           for ([key, value] of Object.entries(inputs)) {
-            parametersTable.push([key, value])
+            // boolean値と数値を文字列に変換する
+            const valueStr = typeof value === 'boolean' || typeof value === 'number' ? value.toString() : value;
+            parametersTable.push([key, valueStr])
           }
 
           await core.summary
