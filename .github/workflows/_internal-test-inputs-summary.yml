@@ -28,7 +28,7 @@ jobs:
       - name: Setup
         id: workflow-inputs
         run: |
-          inputs=$(echo '{"foo":"bar","hoge":"fuga"}' | jq -c)
+          inputs=$(echo '{"foo":"bar","hoge":"fuga","boolean":false}' | jq -c)
           echo "inputs=${inputs}" >> "$GITHUB_OUTPUT"
 
       - name: Output

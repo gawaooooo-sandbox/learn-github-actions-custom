@@ -37,6 +37,7 @@ runs:
           ];
 
           for ([key, value] of Object.entries(inputs)) {
+          console.log(key, value);
             parametersTable.push([key, value])
           }
 
