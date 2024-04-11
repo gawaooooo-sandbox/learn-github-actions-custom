@@ -87,7 +87,7 @@ runs:
   steps:
     - name: Create inputs summary
       if: ${{ inputs.create-inputs-summary != 'false' }}
-      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/inputs-summary@main
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/inputs-summary@v1
       with:
         workflow-inputs: ${{ toJson(inputs) }}
 

@@ -23,6 +23,7 @@ jobs:
             composite/inputs-summary/action.yml,
             composite/node-npm-setup/action.yml,
             composite/setup-environment-variables/action.yml,
+            composite/aws-s3-deploy-conditionally/action.yml,
           ]
         include:
           - yaml-file: composite/inputs-summary/action.yml
@@ -31,6 +32,8 @@ jobs:
             markdown-file: docs/node-npm-setup.md
           - yaml-file: composite/setup-environment-variables/action.yml
             markdown-file: docs/setup-environment-variables.md
+          - yaml-file: composite/aws-s3-deploy-conditionally/action.yml
+            markdown-file: docs/aws-s3-deploy-conditionally.md
     uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/reusable-make-wf-docs.yml@v1
     with:
       yaml-file: ${{ matrix.yaml-file }}
