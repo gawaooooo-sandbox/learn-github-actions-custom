@@ -31,7 +31,7 @@ jobs:
             markdown-file: docs/node-npm-setup.md
           - yaml-file: composite/setup-environment-variables/action.yml
             markdown-file: docs/setup-environment-variables.md
-    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/reusable-make-wf-docs.yml@main
+    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/reusable-make-wf-docs.yml@v1
     with:
       yaml-file: ${{ matrix.yaml-file }}
       markdown-file: ${{ matrix.markdown-file }}
