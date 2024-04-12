@@ -38,6 +38,15 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Validate input build environment values
+      run: |
+        set -e
+        if ! echo '${{ inputs.build-environments }}' | jq '.' > /dev/null; then
+          echo "Error: The input 'build-environments' is not a valid JSON array."
+          exit 1
+        fi
+      shell: bash
+
     - name: Setup Build Environments [${{ inputs.build-environments }}]
       id: setup-build-environments
       run: |
