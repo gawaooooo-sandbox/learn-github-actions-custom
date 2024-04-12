@@ -30,24 +30,38 @@ jobs:
         uses: ./composite/setup-deployment-config
         with:
           # build-environments: '["BASE_URL=http://example.com", "SERVICE=app", "SPACE_SEPARATED=one two three"]'
-          build-environments: >-
-            BASE_URL="http://example.com"
-            SERVICE="app:test"
-            SPACE_SEPARATED="one two three"
+          # build-environments: >-
+          #   BASE_URL="http://example.com"
+          #   SERVICE="app:test"
+          #   SPACE_SEPARATED="one two three"
+          build-environments: 'BASE_URL="http://example.com" SERVICE="app:test" SPACE_SEPARATED="one two three"'
           s3-sync-command: ./dist s3://my-bucket --delete --dryrun --exclude "*.log" --exclude "test/*"
 
       - name: Verify Build Environments
         run: |
           set -x
 
-          echo '${{ steps.setup-deployment-config.outputs.build-environments }}'
+          # echo '${{ steps.setup-deployment-config.outputs.build-environments }}'
 
-          expected='BASE_URL="http://example.com" SERVICE="app" SPACE_SEPARATED="one two three"'
-          echo "expected=$expected"
-          echo $expected
-          echo '$expected'
+          # expected='BASE_URL="http://example.com" SERVICE="app" SPACE_SEPARATED="one two three"'
 
-          if [ "$expected" != '${{ steps.setup-deployment-config.outputs.build-environments }}' ]; then
+          # if [ "$expected" != '${{ steps.setup-deployment-config.outputs.build-environments }}' ]; then
+          #   echo "Failure: Build environments do not match expected values."
+          #   exit 1
+          # else
+          #   echo "Success: Build environments match expected values."
+          # fi
+
+          # Outputs are fetched from the action's output
+          actual="${{ steps.setup-deployment-config.outputs.build-environments }}"
+
+          # Expected string must match the exact format that the action outputs.
+          expected='BASE_URL="http://example.com" SERVICE="app:test" SPACE_SEPARATED="one two three"'
+
+          echo "Actual: $actual"
+          echo "Expected: $expected"
+
+          if [ "$expected" != "$actual" ]; then
             echo "Failure: Build environments do not match expected values."
             exit 1
           else
