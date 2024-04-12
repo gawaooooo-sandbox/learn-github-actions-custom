@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - "composite/**/action.yml"
+      - ".github/workflows/_internal-docs.yml"
 permissions:
   contents: write
 defaults:
