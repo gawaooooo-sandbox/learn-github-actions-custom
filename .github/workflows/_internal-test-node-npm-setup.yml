@@ -36,6 +36,7 @@ jobs:
           # skip-checkout: "true"
           npm-install-command: "install"
           npm-install-options: "--ignore-scripts"
+          create-inputs-summary: "true"
 
       - name: Verify
         run: |
