@@ -18,7 +18,8 @@ runs:
       run: |
         set -x
         set -e
-        env_vars="${{ inputs.environment-variables }}"
+        # env_vars="${{ inputs.environment-variables }}"
+        env_vars='${{ inputs.environment-variables }}'
         # 分割してそれぞれの環境変数をチェック
         IFS=' ' read -r -a vars <<< "$env_vars"
         for var in "${vars[@]}"; do
