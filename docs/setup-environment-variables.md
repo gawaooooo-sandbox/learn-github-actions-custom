@@ -5,16 +5,14 @@
 ## Description
 
 This action sets up environment variables for the project.
-Set environment variables using the `environments` input.
-Environment variables are set in the format `KEY=VALUE`.
-For example, `BASE_URL=http://example.com`.
-The input `environments` is a JSON array of environment variables.
+Set environment variables using a space-separated string.
+For example, 'TEST="abc" URL="http://agalkjgaljgalkjglag" SEPARATED_VALUE="abc def"'
 
 ## Inputs
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| environment-variables | <pre>Required input to set the environment variables.<br>Environment variables in json array (e.g., ["BASE_URL=http://example.com", "SERVICE=app"])</pre> | `[]` | yes |
+| environment-variables | <pre>Required input to set the environment variables.<br>Environment variables as a space-separated string (e.g., 'TEST="abc" URL="http://example.com" SERVICE="app"')</pre> | n/a | yes |
 
 ## Outputs
 
