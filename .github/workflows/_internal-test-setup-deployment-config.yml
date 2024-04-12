@@ -4,12 +4,12 @@ run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }
 on:
   pull_request:
     paths:
-      - "composite/prepare-deploy-settings/action.yml"
-      - ".github/workflows/_internal-test-prepare-deploy-settings.yml"
+      - "composite/setup-deployment-config/action.yml"
+      - ".github/workflows/_internal-test-setup-deployment-config.yml"
   workflow_dispatch:
 
 concurrency:
-  group: test-prepare-deploy-settings-${{ github.workflow }}-${{ github.ref }}
+  group: test-setup-deployment-config-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 defaults:
@@ -17,7 +17,7 @@ defaults:
     shell: bash
 
 jobs:
-  test-prepare-deploy-settings:
+  test-setup-deployment-config:
     runs-on: ubuntu-22.04
     timeout-minutes: 5
 
@@ -26,8 +26,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Exercise
-        id: prepare-deploy-settings
-        uses: ./composite/prepare-deploy-settings
+        id: setup-deployment-config
+        uses: ./composite/setup-deployment-config
         with:
           build-environments: '["BASE_URL=http://example.com", "SERVICE=app"]'
           s3-sync-command: ./dist s3://my-bucket --delete --exclude "*.log"
@@ -35,7 +35,7 @@ jobs:
       - name: Verify Build Environments
         run: |
           expected='["BASE_URL=http://example.com", "SERVICE=app"]'
-          if [ "$expected" != "${{ steps.prepare-deploy-settings.outputs.build-environments }}" ]; then
+          if [ "$expected" != "${{ steps.setup-deployment-config.outputs.build-environments }}" ]; then
             echo "Failure: Build environments do not match expected values."
             exit 1
           else
@@ -45,7 +45,7 @@ jobs:
       - name: Verify S3 Sync Command
         run: |
           expected='./dist s3://my-bucket --delete --exclude "*.log"'
-          if [ "$expected" != "${{ steps.prepare-deploy-settings.outputs.s3-sync-command }}" ]; then
+          if [ "$expected" != "${{ steps.setup-deployment-config.outputs.s3-sync-command }}" ]; then
             echo "Failure: S3 sync command does not match expected values."
             exit 1
           else
