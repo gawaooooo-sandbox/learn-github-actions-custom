@@ -33,12 +33,17 @@ jobs:
         id: setup-deployment-config
         uses: ./composite/setup-deployment-config
         with:
-          build-environments: '["TEST_URL=https://example.com", "API_KEY=abcdef12345", "SPACE_SEPARATED=one two three"]'
+          # build-environments: '["TEST_URL=https://example.com", "API_KEY=abcdef12345", "SPACE_SEPARATED=one two three"]'
+          build-environments: >-
+            TEST_URL="https://example.com"
+            API_KEY="abcdef12345"
+            SPACE_SEPARATED="one two three"
           s3-sync-command: ./dist s3://my-bucket --delete --exclude "*.log"
 
       - name: Outputs Build Environments
         run: |
           echo '${{ steps.setup-deployment-config.outputs.build-environments }}'
+          echo "${{ steps.setup-deployment-config.outputs.build-environments }}"
 
       - name: Outputs S3 Sync Command
         run: |
