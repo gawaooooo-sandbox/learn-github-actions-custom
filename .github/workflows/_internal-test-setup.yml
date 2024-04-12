@@ -39,6 +39,7 @@ jobs:
       - name: Outputs Build Environments
         run: |
           echo "${{ steps.setup-deployment-config.outputs.build-environments }}"
+          echo ${{ steps.setup-deployment-config.outputs.build-environments }}
 
       - name: Outputs S3 Sync Command
         run: |
