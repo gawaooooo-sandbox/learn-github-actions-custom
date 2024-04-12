@@ -34,12 +34,9 @@ jobs:
 
       - name: Verify Build Environments
         run: |
-          echo "${{ steps.setup-deployment-config.outputs.build-environments }}"
-          echo ${{ steps.setup-deployment-config.outputs.build-environments }}
           echo '${{ steps.setup-deployment-config.outputs.build-environments }}'
 
           expected='["BASE_URL=http://example.com", "SERVICE=app"]'
-          # if [ "$expected" != "${{ steps.setup-deployment-config.outputs.build-environments }}" ]; then
           if [ "$expected" != '${{ steps.setup-deployment-config.outputs.build-environments }}' ]; then
             echo "Failure: Build environments do not match expected values."
             exit 1

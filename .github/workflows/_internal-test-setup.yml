@@ -38,12 +38,11 @@ jobs:
 
       - name: Outputs Build Environments
         run: |
-          echo "${{ steps.setup-deployment-config.outputs.build-environments }}"
-          echo ${{ steps.setup-deployment-config.outputs.build-environments }}
+          echo '${{ steps.setup-deployment-config.outputs.build-environments }}'
 
       - name: Outputs S3 Sync Command
         run: |
-          echo "${{ steps.setup-deployment-config.outputs.s3-sync-command }}"
+          echo '${{ steps.setup-deployment-config.outputs.s3-sync-command }}'
 
   test-setup-environment-variables:
     runs-on: ubuntu-22.04
@@ -57,8 +56,7 @@ jobs:
       - name: Exercise Environment Variables
         uses: ./composite/setup-environment-variables
         with:
-          environment-variables: ${{needs.test-setup-deployment-config.outputs.build-environments}}
-          # environment-variables: "${{ needs.test-setup-deployment-config.outputs.build-environments }}"
+          environment-variables: "${{needs.test-setup-deployment-config.outputs.build-environments}}"
 
       - name: Verify
         run: |
