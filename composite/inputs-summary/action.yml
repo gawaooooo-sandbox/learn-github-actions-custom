@@ -16,19 +16,12 @@ runs:
       uses: actions/github-script@v7
       with:
         script: |
-          const { INPUTS: _inputs } = process.env;
-          console.log(typeof _inputs);
-          console.log(_inputs);
+          const inputsStr = process.env.INPUTS;
+          console.log(typeof inputsStr);
+          console.log(inputsStr);
 
-          let inputs;
-          // _inputs の型がstringの場合はJSON.parseする
-          if (typeof _inputs === 'string') {
-            inputs = JSON.parse(_inputs);
-          } else {
-            inputs = _inputs;
-          }
-
-          // const inputs = JSON.parse(process.env.INPUTS);
+          // 文字列をJSONオブジェクトに変換
+          const inputs = JSON.parse(inputsStr);
           console.log(inputs);
 
           const parametersTable = [
