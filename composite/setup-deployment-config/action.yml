@@ -43,7 +43,7 @@ runs:
       run: |
         set -x
         # JSON文字列をエスケープ
-        json_envs=$(echo "${{ inputs.build-environments }}" | sed 's/"/\\"/g')
+        json_envs=$(echo '${{ inputs.build-environments }}' | sed 's/"/\\"/g')
         echo "build-environments=$json_envs" >> "$GITHUB_OUTPUT"
       shell: bash
 
