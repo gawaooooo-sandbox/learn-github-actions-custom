@@ -23,7 +23,7 @@ runs:
         env_vars='${{ inputs.environment-variables }}'
         echo "$env_vars"
         echo $env_vars
-        echo '$env_vars'
+        # echo '$env_vars'
 
         # 正規表現を使ってクォートで囲まれた部分を抽出し、正しく処理
         while [[ "$env_vars" =~ ([A-Za-z_][A-Za-z_0-9]*="[^"]*") ]]; do
