@@ -39,15 +39,16 @@ jobs:
       - name: Verify Build Environments
         run: |
           echo '${{ steps.setup-deployment-config.outputs.build-environments }}'
+          echo "${{ steps.setup-deployment-config.outputs.build-environments }}"
           echo ${{ steps.setup-deployment-config.outputs.build-environments }}
 
-          # expected='["BASE_URL=http://example.com", "SERVICE=app", "SPACE_SEPARATED=one two three"]'
-          # if [ "$expected" != '${{ steps.setup-deployment-config.outputs.build-environments }}' ]; then
-          #   echo "Failure: Build environments do not match expected values."
-          #   exit 1
-          # else
-          #   echo "Success: Build environments match expected values."
-          # fi
+          expected='BASE_URL="http://example.com" SERVICE="app" SPACE_SEPARATED="one two three"'
+          if [ "$expected" != '${{ steps.setup-deployment-config.outputs.build-environments }}' ]; then
+            echo "Failure: Build environments do not match expected values."
+            exit 1
+          else
+            echo "Success: Build environments match expected values."
+          fi
 
       - name: Verify S3 Sync Command
         run: |

@@ -47,8 +47,10 @@ runs:
         # json_envs='${{ inputs.build-environments }}'
         # echo "build-environments=$json_envs" >> "$GITHUB_OUTPUT"
 
-        # Setting the build environments directly from input to output
-        echo "build-environments=${{ inputs.build-environments }}" >> "$GITHUB_OUTPUT"
+        # Read the build environments directly from input and properly format for output
+        env_vars="${{ inputs.build-environments }}"
+        # Using printf to handle special characters and multiple lines
+        printf "build-environments=%s" "$env_vars" >> "$GITHUB_OUTPUT"
       shell: bash
 
     - name: Setup S3 Deploy Command [${{ inputs.s3-sync-command }}]
