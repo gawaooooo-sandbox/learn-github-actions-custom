@@ -18,7 +18,7 @@ runs:
       run: |
         set -x
         set -e
-        env_vars="${{ inputs.value }}"
+        env_vars="${{ inputs.environment-variables }}"
         # 分割してそれぞれの環境変数をチェック
         IFS=' ' read -r -a vars <<< "$env_vars"
         for var in "${vars[@]}"; do
@@ -35,7 +35,7 @@ runs:
         set -e
 
         # 文字列から環境変数を抽出し設定
-        env_vars="${{ inputs.value }}"
+        env_vars="${{ inputs.environment-variables }}"
         IFS=' ' read -r -a vars <<< "$env_vars"
         for var in "${vars[@]}"; do
           key=$(echo "$var" | cut -d '=' -f 1)
