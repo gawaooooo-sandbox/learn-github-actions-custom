@@ -31,13 +31,11 @@ jobs:
         id: setup-deployment-config
         uses: ./composite/setup-deployment-config
         with:
-          # build-environments: '["BASE_URL=http://example.com", "SERVICE=app", "SPACE_SEPARATED=one two three"]'
           build-environments: >-
             BASE_URL="http://example.com"
             SERVICE="app:test"
             SPACE_SEPARATED="one two three"
             ENV_VALUE_TEST="${{ env.ENV_VALUE }}"
-          # build-environments: 'BASE_URL="http://example.com" SERVICE="app:test" SPACE_SEPARATED="one two three"'
           s3-sync-command: ./dist s3://my-bucket --delete --dryrun --exclude "*.log" --exclude "test/*"
 
       - name: Verify Build Environments
