@@ -1,0 +1,53 @@
+name: Setup Deployment Config
+description: |
+  This action sets up the deployment configuration for the project.
+  Set build environments using the `build-environments` input.
+  Build environments are set in the format `KEY=VALUE`.
+  For example, `BASE_URL=http://example.com`.
+
+  The input `build-environments` is a JSON array of build environments.
+  Set the S3 sync command using the `s3-sync-command` input.
+  The S3 sync command is the command to sync files to the S3 bucket.
+  For example, `./dist s3://my-bucket --delete`.
+
+inputs:
+  build-environments:
+    description: |
+      Required input to set the build environments.
+      Build environments in json array (e.g., ["BASE_URL=http://example.com", "SERVICE=app"])
+    required: true
+    default: "[]"
+
+  s3-sync-command:
+    description: |
+      "The command to sync files to the S3 bucket."
+      e.g. "./dist s3://my-bucket --delete"
+    required: true
+
+outputs:
+  build-environments:
+    description: |
+      "The build environments for the project."
+    value: ${{ steps.setup-build-environments.outputs.build-environments }}
+
+  s3-sync-command:
+    description: |
+      "The command to sync files to the S3 bucket."
+    value: ${{ steps.setup-s3-sync-command.outputs.s3-sync-command }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Build Environments [${{ inputs.build-environments }}]
+      id: setup-build-environments
+      run: |
+        set -x
+        echo "build-environments=${{ inputs.build-environments }}" >> "$GITHUB_OUTPUT"
+      shell: bash
+
+    - name: Setup S3 Deploy Command [${{ inputs.s3-sync-command }}]
+      id: setup-s3-sync-command
+      run: |
+        set -x
+        echo "s3-sync-command=${{ inputs.s3-sync-command }}" >> "$GITHUB_OUTPUT"
+      shell: bash
