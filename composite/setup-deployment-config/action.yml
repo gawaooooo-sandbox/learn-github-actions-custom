@@ -42,10 +42,9 @@ runs:
       id: setup-build-environments
       run: |
         set -x
-        # # JSON文字列をエスケープ
-        # json_envs=$(echo '${{ inputs.build-environments }}' | sed 's/"/\\"/g')
-        # echo "build-environments=$json_envs" >> "$GITHUB_OUTPUT"
-        echo "build-environments=${{ inputs.build-environments }}" >> "$GITHUB_OUTPUT"
+        # JSON文字列をエスケープ
+        json_envs=$(echo '${{ inputs.build-environments }}' | sed 's/"/\\"/g')
+        echo "build-environments=$json_envs" >> "$GITHUB_OUTPUT"
       shell: bash
 
     - name: Setup S3 Deploy Command [${{ inputs.s3-sync-command }}]
