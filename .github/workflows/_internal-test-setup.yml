@@ -57,8 +57,8 @@ jobs:
       - name: Exercise Environment Variables
         uses: ./composite/setup-environment-variables
         with:
-          # environment-variables: ${{needs.test-setup-deployment-config.outputs.build-environments}}
-          environment-variables: "${{ needs.test-setup-deployment-config.outputs.build-environments }}"
+          environment-variables: ${{needs.test-setup-deployment-config.outputs.build-environments}}
+          # environment-variables: "${{ needs.test-setup-deployment-config.outputs.build-environments }}"
 
       - name: Verify
         run: |
