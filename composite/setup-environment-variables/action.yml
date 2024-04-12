@@ -24,15 +24,15 @@ runs:
         echo "$env_vars"
 
 
-        # 正規表現を使ってクォートで囲まれた部分を抽出し、正しく処理
-        while [[ "$env_vars" =~ ([A-Za-z_][A-Za-z_0-9]*="[^"]*") ]]; do
-          var="${BASH_REMATCH[1]}"
-          # 抽出した変数を設定
-          key=$(echo "$var" | cut -d '=' -f 1)
-          value=$(echo "$var" | sed -e 's/^[^=]*="//' -e 's/"$//')
-          echo "Setting: $key=$value"
-          echo "$key=$value" >> "$GITHUB_ENV"
-          # 処理した変数部分を削除して次の変数へ
-          env_vars=${env_vars#*$var}
-        done
+        # # 正規表現を使ってクォートで囲まれた部分を抽出し、正しく処理
+        # while [[ "$env_vars" =~ ([A-Za-z_][A-Za-z_0-9]*="[^"]*") ]]; do
+        #   var="${BASH_REMATCH[1]}"
+        #   # 抽出した変数を設定
+        #   key=$(echo "$var" | cut -d '=' -f 1)
+        #   value=$(echo "$var" | sed -e 's/^[^=]*="//' -e 's/"$//')
+        #   echo "Setting: $key=$value"
+        #   echo "$key=$value" >> "$GITHUB_ENV"
+        #   # 処理した変数部分を削除して次の変数へ
+        #   env_vars=${env_vars#*$var}
+        # done
       shell: bash
