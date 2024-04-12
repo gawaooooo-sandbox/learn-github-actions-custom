@@ -38,7 +38,7 @@ jobs:
           set -x
           echo ${{ steps.deploy.outputs.s3-deploy-command }}
 
-          expected_command="aws s3 sync ./docs s3://my-bucket --delete --dryrun"
+          expected_command='aws s3 sync ./docs s3://my-bucket --delete --dryrun --exclude "*.log" --exclude "*.tmp"'
           if [ "$expected_command" == "${{ steps.deploy.outputs.s3-deploy-command }}" ]; then
             echo "Success: The S3 deploy command matches the expected command."
           else
