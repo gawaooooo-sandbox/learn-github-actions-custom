@@ -1,14 +1,14 @@
 name: Setup Deployment Config
 description: |
   This action sets up the deployment configuration for the project by configuring build environments and preparing the S3 sync command.
-  Use the `build-environments` input to set environment variables in the format `KEY=VALUE` separated by spaces (e.g., 'BASE_URL=http://example.com SERVICE=app').
+  Use the `build-environments` input to set environment variables in the format `KEY=VALUE` separated by spaces (e.g., 'BASE_URL="http://example.com" "SERVICE=app"').
   Use the `s3-sync-command` input to specify the command for syncing files to an S3 bucket, including any necessary flags.
 
 inputs:
   build-environments:
     description: |
       Required input to set the build environments.
-      Specify as a space-separated string of key-value pairs (e.g., 'BASE_URL=http://example.com SERVICE=app').
+      Specify as a space-separated string of key-value pairs (e.g., 'BASE_URL="http://example.com" SERVICE="app"').
     required: true
 
   s3-sync-command:
@@ -31,25 +31,15 @@ outputs:
 runs:
   using: composite
   steps:
-    # - name: Validate input build environment values
-    #   run: |
-    #     set -e
-    #     if ! echo '${{ inputs.build-environments }}' | jq '.' > /dev/null; then
-    #       echo "Error: The input 'build-environments' is not a valid JSON array."
-    #       exit 1
-    #     fi
-    #   shell: bash
-
     - name: Setup Build Environments [${{ inputs.build-environments }}]
       id: setup-build-environments
       run: |
         set -x
-        # json_envs='${{ inputs.build-environments }}'
-        # echo "build-environments=$json_envs" >> "$GITHUB_OUTPUT"
 
-        # Read the build environments directly from input and properly format for output
-        env_vars='${{ inputs.build-environments }}'
-        echo "build-environments=$env_vars" >> "$GITHUB_OUTPUT"
+        # 入力値をシングルクォーテーションで囲むことで、文字列がそのまま保持されるようにする。
+        # GitHub Actionsの式展開を避けて、入力された文字列がスクリプト内で正確に解析されるようにするため。
+        build_vars='${{ inputs.build-environments }}'
+        echo "build-environments=build_vars" >> "$GITHUB_OUTPUT"
       shell: bash
 
     - name: Setup S3 Deploy Command [${{ inputs.s3-sync-command }}]

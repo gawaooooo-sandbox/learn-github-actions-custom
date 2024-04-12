@@ -20,6 +20,8 @@ jobs:
   test-setup-deployment-config:
     runs-on: ubuntu-22.04
     timeout-minutes: 5
+    env:
+      ENV_VALUE: 123:456:789
 
     steps:
       - name: Checkout
@@ -30,33 +32,23 @@ jobs:
         uses: ./composite/setup-deployment-config
         with:
           # build-environments: '["BASE_URL=http://example.com", "SERVICE=app", "SPACE_SEPARATED=one two three"]'
-          # build-environments: >-
-          #   BASE_URL="http://example.com"
-          #   SERVICE="app:test"
-          #   SPACE_SEPARATED="one two three"
-          build-environments: 'BASE_URL="http://example.com" SERVICE="app:test" SPACE_SEPARATED="one two three"'
+          build-environments: >-
+            BASE_URL="http://example.com"
+            SERVICE="app:test"
+            SPACE_SEPARATED="one two three"
+            ENV_VALUE_TEST="${{ env.ENV_VALUE }}"
+          # build-environments: 'BASE_URL="http://example.com" SERVICE="app:test" SPACE_SEPARATED="one two three"'
           s3-sync-command: ./dist s3://my-bucket --delete --dryrun --exclude "*.log" --exclude "test/*"
 
       - name: Verify Build Environments
         run: |
           set -x
 
-          # echo '${{ steps.setup-deployment-config.outputs.build-environments }}'
-
-          # expected='BASE_URL="http://example.com" SERVICE="app" SPACE_SEPARATED="one two three"'
-
-          # if [ "$expected" != '${{ steps.setup-deployment-config.outputs.build-environments }}' ]; then
-          #   echo "Failure: Build environments do not match expected values."
-          #   exit 1
-          # else
-          #   echo "Success: Build environments match expected values."
-          # fi
-
           # Outputs are fetched from the action's output, encapsulated in single quotes to preserve the integrity of the data.
           actual='${{ steps.setup-deployment-config.outputs.build-environments }}'
 
           # Expected string must match the exact format that the action outputs.
-          expected='BASE_URL="http://example.com" SERVICE="app:test" SPACE_SEPARATED="one two three"'
+          expected='BASE_URL="http://example.com" SERVICE="app:test" SPACE_SEPARATED="one two three" ENV_VALUE_TEST="123:456:789"'
 
           echo "Actual: $actual"
           echo "Expected: $expected"
