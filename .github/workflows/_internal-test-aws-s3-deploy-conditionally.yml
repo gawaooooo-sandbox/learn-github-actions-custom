@@ -27,11 +27,10 @@ jobs:
         id: deploy
         uses: ./composite/aws-s3-deploy-conditionally
         with:
-          aws-region: "ap-northeast-1"
+          aws-region: ap-northeast-1
           aws-role-arn: ${{ secrets.AWS_ROLE_ARN }}
-          environment: "development"
-          s3-sync-command: "./docs s3://my-bucket --delete --dryrun"
-          # s3-sync-command: "test"
+          environment: development
+          s3-sync-command: ./docs s3://my-bucket --delete --dryrun --exclude "*.log" --exclude "*.tmp"
           enable-aws-deploy: "false"
 
       - name: Verify
