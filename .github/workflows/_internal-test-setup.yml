@@ -1,0 +1,74 @@
+name: Test for setup-deployment-config & setup-environment-variables
+run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
+
+on:
+  pull_request:
+    paths:
+      - "composite/setup-deployment-config/action.yml"
+      - ".github/workflows/_internal-test-setup-deployment-config.yml"
+      - "composite/setup-environment-variables/action.yml"
+      - ".github/workflows/_internal-test-setup-environment-variables.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: test-setup-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test-setup-deployment-config:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    outputs:
+      build-environments: ${{ steps.setup-deployment-config.outputs.build-environments }}
+      s3-sync-command: ${{ steps.setup-deployment-config.outputs.s3-sync-command }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Exercise Deployment Config
+        id: setup-deployment-config
+        uses: ./composite/setup-deployment-config
+        with:
+          build-environments: >-
+            TEST_URL="https://example.com"
+            API_KEY="abcdef12345"
+            SPACE_SEPARATED="one two three"
+          s3-sync-command: ./dist s3://my-bucket --delete --exclude "*.log"
+
+      - name: Outputs Build Environments
+        run: |
+          echo '${{ steps.setup-deployment-config.outputs.build-environments }}'
+
+      - name: Outputs S3 Sync Command
+        run: |
+          echo '${{ steps.setup-deployment-config.outputs.s3-sync-command }}'
+
+  test-setup-environment-variables:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    needs: [test-setup-deployment-config]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Exercise Environment Variables
+        uses: ./composite/setup-environment-variables
+        with:
+          environment-variables: "${{needs.test-setup-deployment-config.outputs.build-environments}}"
+
+      - name: Verify
+        run: |
+          echo "TEST_URL=$TEST_URL"
+          echo "API_KEY=$API_KEY"
+          echo "SPACE_SEPARATED=$SPACE_SEPARATED"
+          if [ -z "$TEST_URL" ] || [ -z "$API_KEY" ] || [ -z "$SPACE_SEPARATED" ]; then
+            echo "Error: Environment variables are not set correctly."
+            exit 1
+          else
+            echo "Success: Environment variables are set correctly."
+          fi
