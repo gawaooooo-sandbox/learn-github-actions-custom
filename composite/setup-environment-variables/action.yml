@@ -1,41 +1,45 @@
 name: Setup Environment Variables
 description: |
   This action sets up environment variables for the project.
-  Set environment variables using the `environments` input.
-  Environment variables are set in the format `KEY=VALUE`.
-  For example, `BASE_URL=http://example.com`.
-  The input `environments` is a JSON array of environment variables.
+  Set environment variables using a space-separated string.
+  For example, 'TEST="abc" URL="http://agalkjgaljgalkjglag" SEPARATED_VALUE="abc def"'
 
 inputs:
   environment-variables:
     description: |
       Required input to set the environment variables.
-      Environment variables in json array (e.g., ["BASE_URL=http://example.com", "SERVICE=app"])
+      Environment variables as a space-separated string (e.g., 'TEST="abc" URL="http://example.com" SERVICE="app"')
     required: true
-    default: "[]"
 
 runs:
   using: "composite"
   steps:
-    - name: Validate input environment values
+    - name: Validate environment variables input
       run: |
+        set -x
         set -e
-        if ! echo '${{ inputs.environment-variables }}' | jq '.' > /dev/null; then
-          echo "Error: The input 'environments' is not a valid JSON array."
-          exit 1
-        fi
+        env_vars="${{ inputs.value }}"
+        # 分割してそれぞれの環境変数をチェック
+        IFS=' ' read -r -a vars <<< "$env_vars"
+        for var in "${vars[@]}"; do
+          if ! [[ "$var" =~ ^[A-Za-z_][A-Za-z_0-9]*=\".*\"$ ]]; then
+            echo "Error: Environment variable format is incorrect: $var"
+            exit 1
+          fi
+        done
       shell: bash
 
     - name: Setup environment variables
       run: |
         set -x
-        set -e  # 任意のコマンドが非ゼロステータスで終了した場合にスクリプトを終了させる
-        echo '${{ inputs.environment-variables }}' | jq -r '.[]' | while IFS= read -r line; do
-          IFS='=' read -r key value <<< "$line"
-          if [ -z "$key" ] || [ -z "$value" ]; then
-            echo "Error: Environment variable format is incorrect: $line" >&2
-            exit 1
-          fi
-          echo "$key=\"$value\"" >> "$GITHUB_ENV"
+        set -e
+
+        # 文字列から環境変数を抽出し設定
+        env_vars="${{ inputs.value }}"
+        IFS=' ' read -r -a vars <<< "$env_vars"
+        for var in "${vars[@]}"; do
+          key=$(echo "$var" | cut -d '=' -f 1)
+          value=$(echo "$var" | cut -d '=' -f 2-)
+          echo "$key=$value" >> "$GITHUB_ENV"
         done
       shell: bash
