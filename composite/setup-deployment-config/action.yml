@@ -52,6 +52,6 @@ runs:
       run: |
         set -x
         # コマンドラインをエスケープ
-        s3_command=$(echo "${{ inputs.s3-sync-command }}" | sed 's/"/\\"/g')
+        s3_command=$(echo '${{ inputs.s3-sync-command }}' | sed 's/"/\\"/g')
         echo "s3-sync-command=$s3_command" >> "$GITHUB_OUTPUT"
       shell: bash
