@@ -39,7 +39,7 @@ runs:
         # 入力値をシングルクォーテーションで囲むことで、文字列がそのまま保持されるようにする。
         # GitHub Actionsの式展開を避けて、入力された文字列がスクリプト内で正確に解析されるようにするため。
         build_vars='${{ inputs.build-environments }}'
-        echo "build-environments=build_vars" >> "$GITHUB_OUTPUT"
+        echo "build-environments=$build_vars" >> "$GITHUB_OUTPUT"
       shell: bash
 
     - name: Setup S3 Deploy Command [${{ inputs.s3-sync-command }}]
