@@ -48,7 +48,7 @@ runs:
         # echo "build-environments=$json_envs" >> "$GITHUB_OUTPUT"
 
         # Read the build environments directly from input and properly format for output
-        env_vars="${{ inputs.build-environments }}"
+        env_vars='${{ inputs.build-environments }}'
         # Using printf to handle special characters and multiple lines
         printf "build-environments=%s" "$env_vars" >> "$GITHUB_OUTPUT"
       shell: bash
