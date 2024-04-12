@@ -36,10 +36,14 @@ jobs:
       - name: Verify
         run: |
           set -x
-          echo ${{ steps.deploy.outputs.s3-deploy-command }}
 
-          expected_command='aws s3 sync ./docs s3://my-bucket --delete --dryrun --exclude "*.log" --exclude "storybook/*"'
-          if [ "$expected_command" == "${{ steps.deploy.outputs.s3-deploy-command }}" ]; then
+          actual='${{ steps.deploy.outputs.s3-deploy-command }}'
+          expected='aws s3 sync ./docs s3://my-bucket --delete --dryrun --exclude "*.log" --exclude "storybook/*"'
+
+          echo "Actual: $actual"
+          echo "Expected: $expected"
+
+          if [ "$expected" == "$actual" ]; then
             echo "Success: The S3 deploy command matches the expected command."
           else
             echo "Failure: The S3 deploy command does not match the expected command."
