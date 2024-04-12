@@ -19,7 +19,8 @@ runs:
         set -x
         set -e
 
-        env_vars="${{ inputs.environment-variables }}"
+        # env_vars="${{ inputs.environment-variables }}"
+        env_vars='${{ inputs.environment-variables }}'
         echo "$env_vars"
         echo $env_vars
         echo '$env_vars'
