@@ -28,8 +28,7 @@ jobs:
       - name: Exercise
         uses: ./composite/setup-environment-variables
         with:
-          # environment-variables: '["TEST_URL=https://example.com", "API_KEY=abcdef12345", "SPACE_SEPARATED=one two three"]'
-          environment-variables: '[\"TEST_URL=https://example.com\", \"API_KEY=abcdef12345\", \"SPACE_SEPARATED=one two three\"]'
+          environment-variables: '["TEST_URL=https://example.com", "API_KEY=abcdef12345", "SPACE_SEPARATED=one two three"]'
 
       - name: Verify
         run: |
