@@ -62,10 +62,14 @@ jobs:
         run: |
           set -x
 
-          echo '${{ steps.setup-deployment-config.outputs.s3-sync-command }}'
-
+          # Outputs are fetched from the action's output, encapsulated in single quotes to preserve the integrity of the data.
+          actual='${{ steps.setup-deployment-config.outputs.s3-sync-command }}'
           expected='./dist s3://my-bucket --delete --dryrun --exclude "*.log" --exclude "test/*"'
-          if [ "$expected" != '${{ steps.setup-deployment-config.outputs.s3-sync-command }}' ]; then
+
+          echo "Actual: $actual"
+          echo "Expected: $expected"
+
+          if [ "$expected" != "$actual" ]; then
             echo "Failure: S3 sync command does not match expected values."
             exit 1
           else
