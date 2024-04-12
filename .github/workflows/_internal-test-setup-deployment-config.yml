@@ -34,6 +34,8 @@ jobs:
 
       - name: Verify Build Environments
         run: |
+          echo "${{ steps.setup-deployment-config.outputs.build-environments }}"
+
           expected='["BASE_URL=http://example.com", "SERVICE=app"]'
           if [ "$expected" != "${{ steps.setup-deployment-config.outputs.build-environments }}" ]; then
             echo "Failure: Build environments do not match expected values."
@@ -44,6 +46,8 @@ jobs:
 
       - name: Verify S3 Sync Command
         run: |
+          echo "${{ steps.setup-deployment-config.outputs.s3-sync-command }}"
+
           expected='./dist s3://my-bucket --delete --exclude "*.log"'
           if [ "$expected" != "${{ steps.setup-deployment-config.outputs.s3-sync-command }}" ]; then
             echo "Failure: S3 sync command does not match expected values."
