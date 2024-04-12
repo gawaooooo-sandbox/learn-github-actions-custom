@@ -52,8 +52,8 @@ jobs:
           #   echo "Success: Build environments match expected values."
           # fi
 
-          # Outputs are fetched from the action's output
-          actual="${{ steps.setup-deployment-config.outputs.build-environments }}"
+          # Outputs are fetched from the action's output, encapsulated in single quotes to preserve the integrity of the data.
+          actual='${{ steps.setup-deployment-config.outputs.build-environments }}'
 
           # Expected string must match the exact format that the action outputs.
           expected='BASE_URL="http://example.com" SERVICE="app:test" SPACE_SEPARATED="one two three"'
