@@ -29,14 +29,14 @@ jobs:
         id: setup-deployment-config
         uses: ./composite/setup-deployment-config
         with:
-          build-environments: '["BASE_URL=http://example.com", "SERVICE=app"]'
+          build-environments: '["BASE_URL=http://example.com", "SERVICE=app", "SPACE_SEPARATED=one two three"]'
           s3-sync-command: ./dist s3://my-bucket --delete --exclude "*.log"
 
       - name: Verify Build Environments
         run: |
           echo '${{ steps.setup-deployment-config.outputs.build-environments }}'
 
-          expected='["BASE_URL=http://example.com", "SERVICE=app"]'
+          expected='["BASE_URL=http://example.com", "SERVICE=app", "SPACE_SEPARATED=one two three"]'
           if [ "$expected" != '${{ steps.setup-deployment-config.outputs.build-environments }}' ]; then
             echo "Failure: Build environments do not match expected values."
             exit 1
