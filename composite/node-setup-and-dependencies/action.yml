@@ -1,8 +1,8 @@
-name: Node.js and npm Setup
+name: Node.js Setup and Dependency Installation
 description: |
-  This action sets up Node.js and npm based on specified versions and options.
-  It's ideal for creating customizable environments in GitHub Actions workflows.
-  The setup includes version management, optional checkout, dependency installation, and npm configuration.
+  This action sets up Node.js and npm based on specified versions and options, and installs dependencies.
+  It's ideal for creating customizable environments in GitHub Actions workflows that require both environment setup and dependency management.
+  The process includes version management, optional checkout, dependency installation, and npm configuration.
 
   ## Usage Example
 
@@ -39,79 +39,73 @@ description: |
 inputs:
   skip-checkout:
     description: |
-      Optional input to skip the checkout step.
-      The input syntax corresponds to the actions/checkout's one.
+      Specify whether to skip the checkout step.
+      Useful when the workflow already has the necessary codebase checked out.
     required: false
     default: "false"
 
   node-version:
     description: |
-      Optional input to set the version of Node.js used to build the project.
-      The input syntax corresponds to the setup-node's one.
+      Set the Node.js version for the project.
+      If unspecified, the version specified in the .nvmrc file will be used if present.
     required: false
 
   node-version-file:
     description: |
-      Optional input to set the file that contains the version of Node.js used to build the project.
-      The input syntax corresponds to the setup-node's one.
+      Set the path to a file containing the Node.js version, like .nvmrc, used for the project.
     required: false
     default: .nvmrc
 
   node-caching:
     description: |
-      Optional input to set up caching for the setup-node action.
-      The input syntax corresponds to the setup-node's one.
-      Set to an empty string if caching isn't needed.
+      Enable caching for Node.js dependencies.
+      Specify 'npm' to cache npm dependencies, or leave blank to disable caching.
     required: false
     default: npm
 
   npm-registry-url:
     description: |
-      Optional input to set the registry URL to use for the npm commands.
-      The input syntax corresponds to the setup-node's one.
-      When using GitHub Packages, specify `https://npm.pkg.github.com`
+      Specify the npm registry URL.
+      For example, use `https://registry.npmjs.org` for npm's default registry or `https://npm.pkg.github.com` for GitHub Packages.
     required: false
+
   npm-scope:
     description: |
-      Optional input to set the scope to use for the npm commands.
-      The input syntax corresponds to the setup-node's one.
-      `hoge package` -> `@hoge`
-      GitHub Packages -> `@owner` (use `github.repository_owner`)
+      Specify the scope for npm package operations, which is typically used with private or scoped packages.
+      You can set this scope to match the owner of the GitHub repository by referring to the GitHub context variable for the repository owner.
+      This is particularly useful for projects that use GitHub Packages, where the scope is often set to the repository's owner.
     required: false
 
   node-auth-token:
     description: |
-      Optional input to set the authentication token to use for the npm commands.
-      The input syntax corresponds to the setup-node's one.
-      When using GitHub Packages, specify `secrets.GITHUB_TOKEN`
-      When using npm, specify `secrets.NPM_AUTH_TOKEN`
+      Provide an authentication token for operations requiring npm registry authentication.
     required: false
 
   checkout-ref:
     description: |
-      Optional input to set the ref to checkout.
-      The input syntax corresponds to the actions/checkout's one.
+      Specify the Git reference (branch, tag, commit SHA) to checkout.
+      This input can be set to checkout a branch other than the default GitHub Actions branch.
+      You can specify this using GitHub context variables to dynamically determine which reference to use based on the current workflow context.
+      For example, to use the branch that triggered the workflow, you can reference 'github.ref' in your workflow configuration.
+      The 'github.head_ref' context is particularly useful in pull request workflows, as it refers to the head branch of the pull request which is being merged from.
     required: false
     # TODO: github.ref?
     default: ${{ github.head_ref }}
 
   npm-install-command:
     description: |
-      Optional input to set the npm command to run.
-      `npm ci` -> `ci`
-      `npm install` -> `install`
+      Choose between 'ci' (for installing stable dependencies) or 'install' for a general installation.
     required: false
     default: "ci"
 
   npm-install-options:
     description: |
-      Optional input to set the options to pass to the `npm ci` or `npm install` command.
-      e.g. `--ignore-scripts --no-audit`
+      Specify additional options for npm install commands, such as '--ignore-scripts' to skip running scripts.
     required: false
 
   create-inputs-summary:
     description: |
-      Optional input to create a summary of the inputs used in the workflow.
+      Enable this option to generate a summary of the workflow inputs. Helpful for debugging and logs.
     required: false
     default: "false"
 

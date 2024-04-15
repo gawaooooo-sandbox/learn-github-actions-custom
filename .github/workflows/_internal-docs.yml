@@ -22,7 +22,7 @@ jobs:
         yaml-file:
           [
             composite/inputs-summary/action.yml,
-            composite/node-npm-setup/action.yml,
+            composite/node-setup-and-dependencies/action.yml,
             composite/setup-environment-variables/action.yml,
             composite/aws-s3-deploy-conditionally/action.yml,
             composite/setup-deployment-config/action.yml,
@@ -30,8 +30,8 @@ jobs:
         include:
           - yaml-file: composite/inputs-summary/action.yml
             markdown-file: docs/inputs-summary.md
-          - yaml-file: composite/node-npm-setup/action.yml
-            markdown-file: docs/node-npm-setup.md
+          - yaml-file: composite/node-setup-and-dependencies/action.yml
+            markdown-file: docs/node-setup-and-dependencies.md
           - yaml-file: composite/setup-environment-variables/action.yml
             markdown-file: docs/setup-environment-variables.md
           - yaml-file: composite/aws-s3-deploy-conditionally/action.yml

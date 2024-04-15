@@ -1,15 +1,15 @@
-name: Test for node-npm-setup
+name: Test for node-setup-and-dependencies
 run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
 
 on:
   pull_request:
     paths:
-      - "composite/node-npm-setup/action.yml"
-      - ".github/workflows/_internal-test-node-npm-setup.yml"
+      - "composite/node-setup-and-dependencies/action.yml"
+      - ".github/workflows/_internal-test-node-setup-and-dependencies.yml"
   workflow_dispatch:
 
 concurrency:
-  group: test-node-npm-setup-${{ github.workflow }}-${{ github.ref }}
+  group: test-node-setup-and-dependencies-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 defaults:
@@ -31,7 +31,7 @@ jobs:
           ls -la
 
       - name: Exercise
-        uses: ./composite/node-npm-setup
+        uses: ./composite/node-setup-and-dependencies
         with:
           # skip-checkout: "true"
           npm-install-command: "install"
