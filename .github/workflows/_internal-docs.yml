@@ -38,7 +38,7 @@ jobs:
             markdown-file: docs/aws-s3-deploy-conditionally.md
           - yaml-file: composite/setup-deployment-config/action.yml
             markdown-file: docs/setup-deployment-config.md
-    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/reusable-make-wf-docs.yml@v1
+    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/docs-generator.yml@v3
     with:
       yaml-file: ${{ matrix.yaml-file }}
       markdown-file: ${{ matrix.markdown-file }}
