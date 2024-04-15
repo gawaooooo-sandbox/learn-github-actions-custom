@@ -4,9 +4,11 @@
 
 ## Description
 
-This action deploys files to an AWS S3 bucket conditionally. It uses the 'aws-actions/configure-aws-credentials' action to configure AWS credentials.
+This action deploys files to an AWS S3 bucket conditionally.
+It uses the 'aws-actions/configure-aws-credentials' action to configure AWS credentials.
 
-In the 'aws-role-arn' input, provide the ARN of your AWS Role. Ensure to manage sensitive values such as ARN and keys securely, preferably using GitHub Secrets.
+In the 'aws-role-arn' input, provide the ARN of your AWS Role.
+Ensure to manage sensitive values such as ARN and keys securely, preferably using GitHub Secrets.
 
 To perform deployment, the action executes a sync command to the specified S3 bucket, controlled by the 'enable-aws-deploy' input parameter.
 
