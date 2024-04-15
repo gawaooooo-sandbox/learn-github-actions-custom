@@ -29,7 +29,9 @@ inputs:
 
   aws-role-arn:
     description: |
-      Specify the ARN of your AWS Role for this action. It is recommended to manage the ARN value securely using GitHub Secrets. Reference the secret in your workflow like 'aws-role-arn: <your-secret-name>'.
+      Specify the ARN of your AWS Role for this action.
+      It is recommended to manage the ARN value securely using GitHub Secrets.
+      Reference the secret in your workflow like 'aws-role-arn: <your-secret-name>'.
     required: true
 
   environment:
