@@ -1,14 +1,19 @@
 name: AWS S3 Deploy Conditionally
 description: |
-  This action deploys files to an AWS S3 bucket conditionally.
-  The action uses the `aws-actions/configure-aws-credentials` action to configure AWS credentials.
+  This action deploys files to an AWS S3 bucket conditionally. It uses the 'aws-actions/configure-aws-credentials' action to configure AWS credentials.
+
+  In the 'aws-role-arn' input, provide the ARN of your AWS Role. Ensure to manage sensitive values such as ARN and keys securely, preferably using GitHub Secrets.
+
+  To perform deployment, the action executes a sync command to the specified S3 bucket, controlled by the 'enable-aws-deploy' input parameter.
+
+  ## Usage Example
 
   ```yml
   steps:
     - name: Deployt to S3
       uses: composite/aws-s3-deploy-conditionally@main
       with:
-        aws-role-arn: '${{ secrets.AWS_ROLE_ARN }}' # For the 'aws-role-arn', use the ARN of your AWS Role. You should use GitHub Secrets to manage sensitive values.
+        aws-role-arn: <your-aws-role-arn> # Replace with your actual AWS Role ARN from GitHub Secrets
         environment: prod
         s3-sync-command: ./dist s3://my-bucket --delete
   ```
@@ -22,7 +27,7 @@ inputs:
 
   aws-role-arn:
     description: |
-      Use the 'aws-role-arn: ${{ secrets.AWS_ROLE_ARN }}' pattern with your actual AWS Role ARN.
+      Specify the ARN of your AWS Role for this action. It is recommended to manage the ARN value securely using GitHub Secrets. Reference the secret in your workflow like 'aws-role-arn: <your-secret-name>'.
     required: true
 
   environment:
