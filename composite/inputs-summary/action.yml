@@ -2,7 +2,7 @@ name: Inputs Summary
 description: |
   This action logs workflow inputs and generates a Markdown summary to visually organize the provided data.
 
-  ## Usage
+  ## Usage Example
   ```yaml
   steps:
     - name: Create Inputs Summary
@@ -10,6 +10,7 @@ description: |
       with:
         workflow-inputs: '{"build_target":"production","test_mode":"enabled"}'
   ```
+
   In this example, workflow-inputs are set directly as a JSON string.
   To dynamically pass inputs from another step, use the `toJSON` function in your workflow file.
   This serialization method ensures that the JSON format is correctly handled and parsing errors are avoided.
