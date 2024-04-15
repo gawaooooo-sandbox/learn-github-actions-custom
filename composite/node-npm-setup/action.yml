@@ -1,7 +1,40 @@
 name: Node.js and npm Setup
 description: |
-  This action sets up Node.js and npm for the project.
-  Install dependencies using `npm ci`.
+  This action sets up Node.js and npm based on specified versions and options.
+  It's ideal for creating customizable environments in GitHub Actions workflows.
+  The setup includes version management, optional checkout, dependency installation, and npm configuration.
+
+  ## Usage Example
+
+  ### Basic Setup
+
+  ```yaml
+  steps:
+    - name: Setup Node.js and Install dependencies
+      uses: composite/node-npm-setup@v0 # This is the version of the action
+      with:
+        checkout-ref: <your-checkout-ref> # Use GitHub Actions context
+        npm-install-options: '--ignore-scripts --no-audit'
+  ```
+  This example demonstrates a basic setup where only essential npm install options are specified, ideal for most projects that do not require specific npm configurations.
+  It uses common parameters to ensure a smooth installation process without scripts or audit checks.
+
+  ### Npm Configuration
+
+  ```yaml
+  steps:
+    - name: Setup Node.js and Install dependencies with specific npm settings
+      uses: composite/node-npm-setup@v0 # This is the version of the action
+      with:
+        npm-registry-url: 'https://registry.npmjs.org' # Custom npm registry URL
+        npm-scope: '@owner' # Custom scope for npm packages
+        node-auth-token: <your-node-auth-token> # Use GitHub Secrets
+        npm-install-options: '--ignore-scripts --no-audit'
+  ```
+
+  This example is tailored for projects that need to interact with a specific npm registry or have private packages.
+  It configures a custom registry URL, a scoped package environment, and authentication using a secret token.
+  This setup is crucial for ensuring private packages are handled securely and effectively.
 
 inputs:
   skip-checkout:
