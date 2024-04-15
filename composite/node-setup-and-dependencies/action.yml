@@ -1,0 +1,143 @@
+name: Node.js Setup and Dependency Installation
+description: |
+  This action sets up Node.js and npm based on specified versions and options, and installs dependencies.
+  It's ideal for creating customizable environments in GitHub Actions workflows that require both environment setup and dependency management.
+  The process includes version management, optional checkout, dependency installation, and npm configuration.
+
+  ## Usage Example
+
+  ### Basic Setup
+
+  ```yaml
+  steps:
+    - name: Setup Node.js and Install dependencies
+      uses: composite/node-npm-setup@v0 # This is the version of the action
+      with:
+        checkout-ref: <your-checkout-ref> # Use GitHub Actions context
+        npm-install-options: '--ignore-scripts --no-audit'
+  ```
+  This example demonstrates a basic setup where only essential npm install options are specified, ideal for most projects that do not require specific npm configurations.
+  It uses common parameters to ensure a smooth installation process without scripts or audit checks.
+
+  ### Npm Configuration
+
+  ```yaml
+  steps:
+    - name: Setup Node.js and Install dependencies with specific npm settings
+      uses: composite/node-npm-setup@v0 # This is the version of the action
+      with:
+        npm-registry-url: 'https://registry.npmjs.org' # Custom npm registry URL
+        npm-scope: '@owner' # Custom scope for npm packages
+        node-auth-token: <your-node-auth-token> # Use GitHub Secrets
+        npm-install-options: '--ignore-scripts --no-audit'
+  ```
+
+  This example is tailored for projects that need to interact with a specific npm registry or have private packages.
+  It configures a custom registry URL, a scoped package environment, and authentication using a secret token.
+  This setup is crucial for ensuring private packages are handled securely and effectively.
+
+inputs:
+  skip-checkout:
+    description: |
+      Specify whether to skip the checkout step.
+      Useful when the workflow already has the necessary codebase checked out.
+    required: false
+    default: "false"
+
+  node-version:
+    description: |
+      Set the Node.js version for the project.
+      If unspecified, the version specified in the .nvmrc file will be used if present.
+    required: false
+
+  node-version-file:
+    description: |
+      Set the path to a file containing the Node.js version, like .nvmrc, used for the project.
+    required: false
+    default: .nvmrc
+
+  node-caching:
+    description: |
+      Enable caching for Node.js dependencies.
+      Specify 'npm' to cache npm dependencies, or leave blank to disable caching.
+    required: false
+    default: npm
+
+  npm-registry-url:
+    description: |
+      Specify the npm registry URL.
+      For example, use `https://registry.npmjs.org` for npm's default registry or `https://npm.pkg.github.com` for GitHub Packages.
+    required: false
+
+  npm-scope:
+    description: |
+      Specify the scope for npm package operations, which is typically used with private or scoped packages.
+      You can set this scope to match the owner of the GitHub repository by referring to the GitHub context variable for the repository owner.
+      This is particularly useful for projects that use GitHub Packages, where the scope is often set to the repository's owner.
+    required: false
+
+  node-auth-token:
+    description: |
+      Provide an authentication token for operations requiring npm registry authentication.
+    required: false
+
+  checkout-ref:
+    description: |
+      Specify the Git reference (branch, tag, commit SHA) to checkout.
+      This input can be set to checkout a branch other than the default GitHub Actions branch.
+      You can specify this using GitHub context variables to dynamically determine which reference to use based on the current workflow context.
+      For example, to use the branch that triggered the workflow, you can reference 'github.ref' in your workflow configuration.
+      The 'github.head_ref' context is particularly useful in pull request workflows, as it refers to the head branch of the pull request which is being merged from.
+    required: false
+    # TODO: github.ref?
+    default: ${{ github.head_ref }}
+
+  npm-install-command:
+    description: |
+      Choose between 'ci' (for installing stable dependencies) or 'install' for a general installation.
+    required: false
+    default: "ci"
+
+  npm-install-options:
+    description: |
+      Specify additional options for npm install commands, such as '--ignore-scripts' to skip running scripts.
+    required: false
+
+  create-inputs-summary:
+    description: |
+      Enable this option to generate a summary of the workflow inputs. Helpful for debugging and logs.
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - name: Create inputs summary
+      if: ${{ inputs.create-inputs-summary != 'false' }}
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/inputs-summary@v1
+      with:
+        workflow-inputs: ${{ toJson(inputs) }}
+
+    - name: Checkout code
+      if: ${{ inputs.skip-checkout == 'false' }}
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.checkout-ref }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        node-version-file: ${{ inputs.node-version-file }}
+        cache: ${{ inputs.node-caching }}
+        registry-url: ${{ inputs.npm-registry-url }}
+        scope: ${{ inputs.npm-scope }}
+
+    - name: Install dependencies
+      run: npm ${{ inputs.npm-install-command}} ${{ inputs.npm-install-options }}
+      shell: bash
+      env:
+        # CI上では Husky を install しない
+        # https://typicode.github.io/husky/how-to.html#ci-server-and-docker
+        HUSKY: "0"
+        NODE_AUTH_TOKEN: ${{ inputs.node-auth-token }}

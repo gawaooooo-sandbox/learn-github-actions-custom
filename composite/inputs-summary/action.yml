@@ -1,12 +1,25 @@
 name: Inputs Summary
 description: |
-  This action creates a summary of the inputs provided to the workflow.
+  This action logs workflow inputs and generates a Markdown summary to visually organize the provided data.
+
+  ## Usage Example
+  ```yaml
+  steps:
+    - name: Create Inputs Summary
+      uses: composite/inputs-summary@v0 # This is the version of the action
+      with:
+        workflow-inputs: '{"build_target":"production","test_mode":"enabled"}'
+  ```
+
+  In this example, workflow-inputs are set directly as a JSON string.
+  To dynamically pass inputs from another step, use the `toJSON` function in your workflow file.
+  This serialization method ensures that the JSON format is correctly handled and parsing errors are avoided.
 
 inputs:
   workflow-inputs:
     description: |
       The inputs provided to the workflow.
-      Passing the inputs context wrapped in a `toJSON` expression.
+      Pass inputs context as a JSON string, or use `toJSON` function to serialize inputs in the workflow file.
     required: true
 
 runs:

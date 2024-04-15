@@ -4,15 +4,31 @@
 
 ## Description
 
-This action sets up environment variables for the project.
-Set environment variables using a space-separated string.
-For example, 'TEST="abc" URL="http://agalkjgaljgalkjglag" SEPARATED_VALUE="abc def"'
+This action is a crucial tool within your GitHub workflow to dynamically configure environment variables.
+By setting up these variables, it allows other actions and scripts within the workflow to operate under defined conditions,
+enhancing the flexibility and security of your deployment processes.
+
+The `environment-variables` input takes a space-separated string of key-value pairs which will be transformed into actual environment variables accessible in subsequent steps of the job.
+This is particularly useful for passing dynamic configurations and sensitive data securely between jobs or steps without hard-coding them into your YAML files.
+
+## Usage Example
+
+```yaml
+steps:
+  - name: Setup Environment Variables
+    uses: composite/setup-environment-variables@v0 # This is the version of the action
+    with:
+      environment-variables: >-
+        TEST_URL="https://example.com"
+        API_KEY="abcdef12345"
+        SPACE_SEPARATED="one two three"
+```
 
 ## Inputs
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| environment-variables | <pre>Required input to set the environment variables.<br>Environment variables as a space-separated string (e.g., 'TEST="abc" URL="http://example.com" SERVICE="app"')</pre> | n/a | yes |
+| environment-variables | <pre>Required input to dynamically set the environment variables for your workflow.<br>Input these as a space-separated string of key-value pairs, where each pair is enclosed in quotes and keys are linked to their values by an equals sign.<br>This format ensures that the variables can be parsed and set correctly within the workflow.<br>For example, provide inputs like 'TEST="abc" URL="http://example.com" SERVICE="app"' to seamlessly integrate these variables into your build and deployment processes.</pre> | n/a | yes |
 
 ## Outputs
 
