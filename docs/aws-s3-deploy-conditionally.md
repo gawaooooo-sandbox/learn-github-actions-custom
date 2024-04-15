@@ -28,7 +28,7 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| aws-role-arn | <pre>Specify the ARN of your AWS Role for this action. It is recommended to manage the ARN value securely using GitHub Secrets. Reference the secret in your workflow like 'aws-role-arn: <your-secret-name>'.</pre> | n/a | yes |
+| aws-role-arn | <pre>Specify the ARN of your AWS Role for this action.<br>It is recommended to manage the ARN value securely using GitHub Secrets.<br>Reference the secret in your workflow like 'aws-role-arn: <your-secret-name>'.</pre> | n/a | yes |
 | environment | <pre>"The environment to deploy to."</pre> | n/a | yes |
 | s3-sync-command | <pre>"The command to sync files to the S3 bucket."<br>e.g. "./dist s3://my-bucket --delete"</pre> | n/a | yes |
 | aws-region | <pre>"The AWS region where the S3 bucket is located."</pre> | `ap-northeast-1` | no |
