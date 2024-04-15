@@ -39,7 +39,7 @@ inputs:
 
   environment:
     description: |
-      "The environment to deploy to."
+      The environment to deploy to.
     required: true
 
   s3-sync-command:
@@ -51,14 +51,14 @@ inputs:
 
   enable-aws-deploy:
     description: |
-      "Whether to deploy to AWS S3."
+      Whether to deploy to AWS S3.
     required: false
     default: "true"
 
 outputs:
   s3-deploy-command:
     description: |
-      "The command to sync files to the S3 bucket."
+      The command to sync files to the S3 bucket.
     value: ${{ steps.setup-s3-deploy-command.outputs.s3-deploy-command }}
 
 runs:

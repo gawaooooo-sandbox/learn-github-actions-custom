@@ -7,7 +7,8 @@ on:
       level:
         type: choice
         required: true
-        description: Bump up to [patch / minor / major]
+        description: |
+          Bump up to [patch / minor / major]
         options:
           - patch
           - minor
@@ -18,7 +19,7 @@ concurrency: ${{ github.workflow }}
 
 jobs:
   call:
-    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/reusable-github-release.yml@v1
+    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/github-release.yml@v3
     with:
       level: ${{ inputs.level }}
     permissions:
