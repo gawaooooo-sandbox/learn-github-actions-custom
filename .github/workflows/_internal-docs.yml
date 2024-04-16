@@ -37,9 +37,9 @@ jobs:
           yaml_files="$(find composite -name 'action.yml')"
 
           # composite/aws-s3-deploy-conditionally/action.yml → docs/aws-s3-deploy-conditionally.md
-          # 以下の変換でディレクトリ構成に基づいた Markdown ファイルパスを生成
+          # ディレクトリパスを 'docs/' に変更し、ファイル名 'action.yml' を '.md' に置換する
           markdown_files="${yaml_files//composite\//docs/}"
-          markdown_files="${markdown_files//action.yml/.md}"
+          markdown_files="${markdown_files//\/action.yml/.md}"
 
           echo "yaml-files=$(echo "$yaml_files" | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
           echo "markdown-files=$(echo "$markdown_files" | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
