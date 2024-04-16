@@ -1,8 +1,10 @@
 name: Generate actions docs
-run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
+run-name: "${{ github.workflow }} for ${{ github.ref_name }} Triggered by: ${{ github.event_name }} [${{ github.sha }}]"
 
 on:
-  pull_request:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
     paths:
       - "composite/**/action.yml"
       - ".github/workflows/_internal-docs.yml"
@@ -16,32 +18,39 @@ defaults:
     shell: bash
 
 jobs:
-  docs:
-    strategy:
-      matrix:
-        yaml-file:
-          [
-            composite/inputs-summary/action.yml,
-            composite/node-setup-and-dependencies/action.yml,
-            composite/setup-environment-variables/action.yml,
-            composite/aws-s3-deploy-conditionally/action.yml,
-            composite/setup-deployment-config/action.yml,
-          ]
-        include:
-          - yaml-file: composite/inputs-summary/action.yml
-            markdown-file: docs/inputs-summary.md
-          - yaml-file: composite/node-setup-and-dependencies/action.yml
-            markdown-file: docs/node-setup-and-dependencies.md
-          - yaml-file: composite/setup-environment-variables/action.yml
-            markdown-file: docs/setup-environment-variables.md
-          - yaml-file: composite/aws-s3-deploy-conditionally/action.yml
-            markdown-file: docs/aws-s3-deploy-conditionally.md
-          - yaml-file: composite/setup-deployment-config/action.yml
-            markdown-file: docs/setup-deployment-config.md
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    outputs:
+      yaml-files: ${{ steps.collect.outputs.yaml-files }}
+      markdown-files: ${{ steps.collect.outputs.markdown-files }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Collect .yml and .md files
+        id: collect
+        run: |
+          set -x
+
+          # 'composite/**/action.yml' で composite ディレクトリ下の action.yml ファイルのみを対象にする
+          yaml_files="$(find composite -name 'action.yml')"
+
+          # composite/aws-s3-deploy-conditionally/action.yml → docs/aws-s3-deploy-conditionally.md
+          # 以下の変換でディレクトリ構成に基づいた Markdown ファイルパスを生成
+          markdown_files="${yaml_files//composite\//docs/}"
+          markdown_files="${markdown_files//action.yml/.md}"
+
+          echo "yaml-files=$(echo "$yaml_files" | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
+          echo "markdown-files=$(echo "$markdown_files" | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
+
+  generate:
+    needs: [prepare]
     uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/docs-generator.yml@v3
     with:
-      yaml-file: ${{ matrix.yaml-file }}
-      markdown-file: ${{ matrix.markdown-file }}
-      ref: ${{ github.head_ref }}
+      commit-message: Update document
+      yaml-files: ${{ toJSON(needs.prepare.outputs.yaml-files) }}
+      markdown-files: ${{ toJSON(needs.prepare.outputs.markdown-files) }}
     permissions:
       contents: write
+      pull-requests: write
