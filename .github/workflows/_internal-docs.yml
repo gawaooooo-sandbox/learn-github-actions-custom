@@ -18,39 +18,11 @@ defaults:
     shell: bash
 
 jobs:
-  prepare:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 5
-    outputs:
-      yaml-files: ${{ steps.collect.outputs.yaml-files }}
-      markdown-files: ${{ steps.collect.outputs.markdown-files }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Collect .yml and .md files
-        id: collect
-        run: |
-          set -x
-
-          # 'composite/**/action.yml' で composite ディレクトリ下の action.yml ファイルのみを対象にする
-          yaml_files="$(find composite -name 'action.yml')"
-
-          # composite/aws-s3-deploy-conditionally/action.yml → docs/aws-s3-deploy-conditionally.md
-          # ディレクトリパスを 'docs/' に変更し、ファイル名 'action.yml' を '.md' に置換する
-          markdown_files="${yaml_files//composite\//docs/}"
-          markdown_files="${markdown_files//\/action.yml/.md}"
-
-          echo "yaml-files=$(echo "$yaml_files" | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
-          echo "markdown-files=$(echo "$markdown_files" | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
-
   generate:
-    needs: [prepare]
     uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/docs-generator.yml@v3
     with:
-      commit-message: Update document
-      yaml-files: ${{ toJSON(needs.prepare.outputs.yaml-files) }}
-      markdown-files: ${{ toJSON(needs.prepare.outputs.markdown-files) }}
+      doc-type: composite
+      commit-message: Update composite action document
     permissions:
       contents: write
       pull-requests: write
