@@ -75,3 +75,56 @@ jobs:
           else
             echo "Success: S3 sync command matches expected values."
           fi
+
+  # build-environments が指定されていない場合のテスト
+  test-setup-deployment-config-no-build-environments:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Exercise
+        id: setup-deployment-config
+        uses: ./composite/setup-deployment-config
+        with:
+          s3-sync-command: ./dist s3://my-bucket --delete --dryrun --exclude "*.log" --exclude "test/*"
+
+      - name: Verify Build Environments
+        run: |
+          set -x
+
+          # Outputs are fetched from the action's output, encapsulated in single quotes to preserve the integrity of the data.
+          actual='${{ steps.setup-deployment-config.outputs.build-environments }}'
+
+          # Expected string must match the exact format that the action outputs.
+          expected=''
+
+          echo "Actual: $actual"
+          echo "Expected: $expected"
+
+          if [ "$expected" != "$actual" ]; then
+            echo "Failure: Build environments do not match expected values."
+            exit 1
+          else
+            echo "Success: Build environments match expected values."
+          fi
+
+      - name: Verify S3 Sync Command
+        run: |
+          set -x
+
+          # Outputs are fetched from the action's output, encapsulated in single quotes to preserve the integrity of the data.
+          actual='${{ steps.setup-deployment-config.outputs.s3-sync-command }}'
+          expected='./dist s3://my-bucket --delete --dryrun --exclude "*.log" --exclude "test/*"'
+
+          echo "Actual: $actual"
+          echo "Expected: $expected"
+
+          if [ "$expected" != "$actual" ]; then
+            echo "Failure: S3 sync command does not match expected values."
+            exit 1
+          else
+            echo "Success: S3 sync command matches expected values."
+          fi

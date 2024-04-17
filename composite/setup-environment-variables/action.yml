@@ -33,6 +33,7 @@ runs:
   using: "composite"
   steps:
     - name: Validate and Set Environment Variables
+      if: ${{ inputs.environment-variables != '' }}
       run: |
         set -x
         set -e
