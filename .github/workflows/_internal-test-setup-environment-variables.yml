@@ -48,3 +48,26 @@ jobs:
           else
             echo "Success: Environment variables are set correctly."
           fi
+
+  # environment-variables が 空文字列の場合
+  test-setup-env-action-empty:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Exercise
+        uses: ./composite/setup-environment-variables
+        with:
+          environment-variables: ""
+
+      - name: Verify
+        run: |
+          if [ -n "$TEST_URL" ] || [ -n "$API_KEY" ] || [ -n "$SPACE_SEPARATED" ] || [ -n "$ENV_VALUE_TEST" ]; then
+            echo "Error: Some environment variables are unexpectedly set."
+            exit 1
+          else
+            echo "Success: All environment variables are unset as expected."
+          fi
