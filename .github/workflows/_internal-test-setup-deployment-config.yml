@@ -127,3 +127,4 @@ jobs:
             exit 1
           else
             echo "Success: S3 sync command matches expected values."
+          fi
