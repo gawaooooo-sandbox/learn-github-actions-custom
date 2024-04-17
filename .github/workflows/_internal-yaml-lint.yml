@@ -17,6 +17,6 @@ defaults:
 
 jobs:
   call:
-    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/reusable-yaml-lint.yml@v1
+    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/reusable-yaml-lint.yml@v3
     permissions:
       contents: read
