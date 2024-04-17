@@ -33,8 +33,8 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| build-environments | <pre>Sets environment variables for the build process.<br>Provide a string of key-value pairs separated by spaces, e.g., 'BASE_URL="http://example.com" SERVICE="app"'.</pre> | n/a | yes |
 | s3-sync-command | <pre>Specifies the command to sync files to an S3 bucket.<br>Format it as a full command line string, e.g., './dist s3://my-bucket --delete'.</pre> | n/a | yes |
+| build-environments | <pre>Sets environment variables for the build process.<br>Provide a string of key-value pairs separated by spaces, e.g., 'BASE_URL="http://example.com" SERVICE="app"'.</pre> | `` | no |
 
 ## Outputs
 
