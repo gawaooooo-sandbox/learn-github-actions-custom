@@ -56,7 +56,7 @@ runs:
     - name: Setup Build Environments [${{ inputs.build-environments }}]
       id: setup-build-environments
       run: |
-        set -x
+        set -xeu
 
         # 入力値をシングルクォーテーションで囲むことで、文字列がそのまま保持されるようにする。
         # GitHub Actionsの式展開を避けて、入力された文字列がスクリプト内で正確に解析されるようにするため。
@@ -64,10 +64,17 @@ runs:
         echo "build-environments=$build_vars" >> "$GITHUB_OUTPUT"
       shell: bash
 
-    - name: Setup S3 Deploy Command [${{ inputs.s3-sync-command }}]
+    - name: Validate and Setup S3 Deploy Command [${{ inputs.s3-sync-command }}]
       id: setup-s3-sync-command
       run: |
-        set -x
+        set -xeu
+
         s3_command='${{ inputs.s3-sync-command }}'
+        # Validate the input to make sure it does not contain any shell control characters
+        if [[ "$s3_command" =~ [\;\&\|] ]]; then
+          echo "Error: Invalid characters in S3 sync command"
+          exit 1
+        fi
+
         echo "s3-sync-command=$s3_command" >> "$GITHUB_OUTPUT"
       shell: bash
