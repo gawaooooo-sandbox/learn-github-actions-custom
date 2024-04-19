@@ -45,3 +45,8 @@ jobs:
         with:
           # workflow-inputs: ${{ toJSON(steps.workflow-inputs.outputs.inputs) }}
           workflow-inputs: ${{ steps.workflow-inputs.outputs.inputs }}
+
+      - name: Exercise (invalid json)
+        uses: ./composite/inputs-summary
+        with:
+          workflow-inputs: '{"foo":"bar","hoge":"fuga","boolean":false,"num":123'
