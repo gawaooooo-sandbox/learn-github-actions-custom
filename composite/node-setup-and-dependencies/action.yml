@@ -89,7 +89,6 @@ inputs:
       For example, to use the branch that triggered the workflow, you can reference 'github.ref' in your workflow configuration.
       The 'github.head_ref' context is particularly useful in pull request workflows, as it refers to the head branch of the pull request which is being merged from.
     required: false
-    # TODO: github.ref?
     default: ${{ github.head_ref }}
 
   npm-install-command:
@@ -122,7 +121,7 @@ runs:
       if: ${{ inputs.skip-checkout == 'false' }}
       uses: actions/checkout@v4
       with:
-        ref: ${{ inputs.checkout-ref }}
+        ref: ${{ inputs.checkout-ref || github.ref }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
