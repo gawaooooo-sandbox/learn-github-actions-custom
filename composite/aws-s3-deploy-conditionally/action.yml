@@ -67,7 +67,8 @@ runs:
     - name: Setup S3 deploy command [${{ inputs.s3-sync-command }}]
       id: setup-s3-deploy-command
       run: |
-        set -x
+        set -xeu
+
         s3_command='${{ inputs.s3-sync-command }}'
         echo "s3-deploy-command=aws s3 sync $s3_command" >> "$GITHUB_OUTPUT"
       shell: bash
@@ -82,7 +83,7 @@ runs:
     - name: Deploy to ${{ inputs.environment }} [aws s3 sync ${{ inputs.s3-sync-command }}]
       if: ${{ fromJSON(inputs.enable-aws-deploy) }}
       run: |
-        set -x
+        set -xeu
 
         echo "Deploying to ${{ inputs.environment }} [aws s3 sync ${{ inputs.s3-sync-command}}]]"
         aws s3 sync ${{ inputs.s3-sync-command }}
