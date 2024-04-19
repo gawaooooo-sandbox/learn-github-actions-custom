@@ -160,7 +160,10 @@ runs:
         scope: ${{ inputs.npm-scope }}
 
     - name: Install dependencies
-      run: npm ${{ inputs.npm-install-command}} ${{ inputs.npm-install-options }}
+      run: |
+        set -xeu
+
+        npm ${{ inputs.npm-install-command}} ${{ inputs.npm-install-options }}
       shell: bash
       env:
         # CI上では Husky を install しない
