@@ -33,9 +33,11 @@ runs:
           console.log(typeof inputsStr);
           console.log(inputsStr);
 
+          let inputs = null;
+
           // 文字列をJSONオブジェクトに変換
           try {
-            const inputs = JSON.parse(inputsStr);
+            inputs = JSON.parse(inputsStr);
             console.log(inputs);
           } catch (e) {
             console.warn('Warning: Failed to parse the JSON input:', e);
@@ -47,6 +49,17 @@ runs:
 
             return; // JSON解析に失敗した場合、ここで処理を中断
           }
+
+          if (!inputs) {
+            console.warn('Warning: No valid JSON input provided');
+            core.summary
+              .addRaw("### ⚠️ Warning\n")
+              .addRaw("No valid JSON input provided. The input was either null or not in proper JSON format.\n")
+              .write();
+
+            return; // inputsがnullの場合はここで処理を中断
+          }
+
 
           const parametersTable = [
             [{ data: 'key', header: true}, { data: 'value', header: true }],
