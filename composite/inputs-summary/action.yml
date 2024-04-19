@@ -34,8 +34,19 @@ runs:
           console.log(inputsStr);
 
           // 文字列をJSONオブジェクトに変換
-          const inputs = JSON.parse(inputsStr);
-          console.log(inputs);
+          try {
+            const inputs = JSON.parse(inputsStr);
+            console.log(inputs);
+          } catch (e) {
+            console.warn('Warning: Failed to parse the JSON input:', e);
+
+            core.summary
+              .addRaw("### ⚠️ Warning\n")
+              .addRaw("Failed to parse the provided JSON input. This may occur if the input format is incorrect or missing required fields. Please review the input format and try again.\n")
+              .write();
+
+            return; // JSON解析に失敗した場合、ここで処理を中断
+          }
 
           const parametersTable = [
             [{ data: 'key', header: true}, { data: 'value', header: true }],
