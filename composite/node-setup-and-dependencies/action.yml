@@ -89,7 +89,6 @@ inputs:
       For example, to use the branch that triggered the workflow, you can reference 'github.ref' in your workflow configuration.
       The 'github.head_ref' context is particularly useful in pull request workflows, as it refers to the head branch of the pull request which is being merged from.
     required: false
-    # TODO: github.ref?
     default: ${{ github.head_ref }}
 
   npm-install-command:
@@ -118,11 +117,38 @@ runs:
       with:
         workflow-inputs: ${{ toJson(inputs) }}
 
+    - name: Validation
+      run: |
+        set -xeu
+
+        #  Validate npm registry URL
+        if [[ "${{ inputs.npm-registry-url }}" ]]; then
+          if ! [[ "${{ inputs.npm-registry-url }}" =~ ^https://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/[a-zA-Z0-9.-]*)*$ ]]; then
+            echo "Error: Invalid npm registry URL provided. Please ensure the URL starts with 'https://' and follows a valid domain format, e.g., 'https://registry.npmjs.org'."
+            exit 1
+          fi
+        fi
+
+        # Validate npm scope
+        if [[ "${{ inputs.npm-scope }}" ]]; then
+          if ! [[ "${{ inputs.npm-scope }}" =~ ^@[a-zA-Z0-9.-]+$ ]]; then
+            echo "Error: Invalid npm scope provided. The scope must start with '@' followed by alphanumeric characters, e.g., '@myorg'."
+            exit 1
+          fi
+        fi
+
+        # Validate npm install command
+        if [[ "${{ inputs.npm-install-command }}" != "ci" && "${{ inputs.npm-install-command }}" != "install" ]]; then
+          echo "Error: Invalid npm install command provided."
+          exit 1
+        fi
+      shell: bash
+
     - name: Checkout code
       if: ${{ inputs.skip-checkout == 'false' }}
       uses: actions/checkout@v4
       with:
-        ref: ${{ inputs.checkout-ref }}
+        ref: ${{ inputs.checkout-ref || github.ref }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -134,7 +160,10 @@ runs:
         scope: ${{ inputs.npm-scope }}
 
     - name: Install dependencies
-      run: npm ${{ inputs.npm-install-command}} ${{ inputs.npm-install-options }}
+      run: |
+        set -xeu
+
+        npm ${{ inputs.npm-install-command}} ${{ inputs.npm-install-options }}
       shell: bash
       env:
         # CI上では Husky を install しない
