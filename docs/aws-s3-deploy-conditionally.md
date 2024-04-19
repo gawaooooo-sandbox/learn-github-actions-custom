@@ -16,7 +16,7 @@ To perform deployment, the action executes a sync command to the specified S3 bu
 
 ```yml
 steps:
-  - name: Deployt to S3
+  - name: Deploy to S3
     uses: composite/aws-s3-deploy-conditionally@main
     with:
       aws-role-arn: <your-aws-role-arn> # Replace with your actual AWS Role ARN from GitHub Secrets
