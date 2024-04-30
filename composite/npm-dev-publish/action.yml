@@ -75,11 +75,11 @@ runs:
       run: |
         set -xeu
 
-        version=$(npm version "${{ inputs.versionType }}" -m "chore(release): bump version to %s")
+        version=$(npm version "${{ inputs.version-type }}" -m "chore(release): bump version to %s")
         echo "New version is $version"
         echo "version=${version}" >> "$GITHUB_OUTPUT"
 
-        npm publish --tag ${{ inputs.publishTag }}
+        npm publish --tag ${{ inputs.publish-tag }}
         git push --follow-tags
       shell: bash
       env:
