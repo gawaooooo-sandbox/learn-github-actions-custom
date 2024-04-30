@@ -1,0 +1,99 @@
+name: Publishing Development Package
+description: |
+  このアクションは、開発中のパッケージをGitHub Packagesに公開します。
+
+  開発パッケージは、inputsで指定された`publish-tag`で公開され、正式リリース前に変更をテストするために使用されます。
+
+  ## Usage
+
+  ```yaml
+  steps:
+    - name: Publish development package
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-dev-publish@v0 # This is the version of the action
+      with:
+        version-type: 'prepatch'
+        publish-tag: 'next'
+  ```
+inputs:
+  checkout-ref:
+    description: |
+      チェックアウトするリファレンス
+    required: false
+    default: ${{ github.head_ref || github.ref }}
+  node-version-file:
+    description: |
+      Node.jsのバージョンを指定するファイルのパス
+    required: false
+    default: ".nvmrc"
+  npm-install-command:
+    description: |
+      npm install コマンド
+    required: false
+    default: "ci"
+  version-type:
+    description: |
+      npm version コマンドの引数。
+      'prepatch', 'preminor', 'premajor'などの pre release タイプを指定することを想定。
+    required: true
+  publish-tag:
+    description: |
+      npm publish コマンドの --tag オプション。
+      'latest', 'beta', 'alpha', 'next'などがあります。
+      開発中のバージョンをテスト目的で公開する場合は'next'タグが適しています。
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Inputs summary
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/inputs-summary@v3
+      with:
+        workflow-inputs: ${{ toJSON(inputs) }}
+
+    - name: Setup Node.js and Install dependencies
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/node-setup-and-dependencies@v3
+      with:
+        checkout-ref: ${{ inputs.checkout-ref }}
+        node-version-file: ${{ inputs.node-version-file }}
+        npm-install-command: ${{ inputs.npm-install-command }}
+        npm-registry-url: https://npm.pkg.github.com
+        npm-scope: "@${{ github.repository_owner }}"
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      shell: bash
+
+    - name: Update npm version and publish
+      id: new_version
+      run: |
+        set -xeu
+
+        version=$(npm version "${{ inputs.versionType }}" -m "chore(release): bump version to %s")
+        echo "New version is $version"
+        echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+        npm publish --tag ${{ inputs.publishTag }}
+        git push --follow-tags
+      shell: bash
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create GitHub Release
+      run: |
+        set -xeu
+        gh release create ${{ steps.new_version.outputs.version }} --title ${{ steps.new_version.outputs.version }} --generate-notes
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Append release success to job summary
+      if: success() # Only append to the job summary if the job was successful
+      run: |
+        {
+          echo "## Release Details ✨"
+          echo "Release for version ${{ steps.new_version.outputs.version }} was successfully created 🎉."
+          echo "You can view the release [here](https://github.com/${{ github.repository }}/releases/tag/${{ steps.new_version.outputs.version }})."
+        } >> "$GITHUB_STEP_SUMMARY"
+      shell: bash
