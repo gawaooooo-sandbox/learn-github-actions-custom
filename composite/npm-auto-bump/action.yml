@@ -27,7 +27,7 @@ inputs:
     description: |
       チェックアウトするリファレンス
     required: false
-    default: ${{ github.head_ref }}
+    default: ${{ github.head_ref || github.ref }}
   node-version-file:
     description: |
       Node.jsのバージョンを指定するファイルのパス
