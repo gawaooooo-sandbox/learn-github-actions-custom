@@ -26,7 +26,7 @@ steps:
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
 | label-name | <pre>バージョンを更新するラベル名<br>release/(patch|minor|major) のいずれかを指定します</pre> | n/a | yes |
-| checkout-ref | <pre>チェックアウトするリファレンス</pre> | `${{ github.head_ref }}` | no |
+| checkout-ref | <pre>チェックアウトするリファレンス</pre> | `${{ github.head_ref || github.ref }}` | no |
 | node-version-file | <pre>Node.jsのバージョンを指定するファイルのパス</pre> | `.nvmrc` | no |
 
 ## Outputs
