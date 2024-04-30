@@ -13,6 +13,7 @@ description: |
       with:
         version-type: 'prepatch'
         publish-tag: 'next'
+        github-token: 'YOUR_GITHUB_TOKEN'  # ここにGitHub Actionsが提供するデフォルトのトークンを指定
   ```
 inputs:
   checkout-ref:
