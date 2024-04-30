@@ -1,0 +1,79 @@
+name: Npm Auto Bump
+description: |
+  このアクションは、GitHubのラベルに基づいてNPMパッケージのバージョンを自動的にアップデートし、更新されたパッケージファイルをリポジトリにプッシュします。
+
+  `release/patch`、`release/minor`、`release/major`のいずれかのラベルがプルリクエストに適用された場合に使用します。
+
+  ## Usage
+  以下のようにワークフローに組み込んで使用します。
+
+  `label-name`には、プルリクエストに適用されたバージョン更新用のラベルを指定し、必要に応じて`checkout-ref`を指定して、特定のGitリファレンスから作業を開始することができます。
+
+  ```yaml
+  steps:
+    - name: Bump version and push package files
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-auto-bump@v0 # This is the version of the action
+      with:
+        label-name: 'release/patch'
+  ```
+
+inputs:
+  label-name:
+    description: |
+      バージョンを更新するラベル名
+      release/(patch|minor|major) のいずれかを指定します
+    required: true
+  checkout-ref:
+    description: |
+      チェックアウトするリファレンス
+    required: false
+    default: ${{ github.head_ref }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check label validity
+      run: |
+        set -xeu
+
+        label="${LABEL_NAME}"
+        if [[ ! "$label" =~ ^release/(patch|minor|major)$ ]]; then
+          echo "::error::Invalid version label '$label'. Valid labels are 'release/patch', 'release/minor', and 'release/major'."
+          exit 1
+        fi
+      shell: bash
+      env:
+        LABEL_NAME: ${{ inputs.label-name }}
+
+    - name: Setup Node.js and Install dependencies
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/node-setup-and-dependencies@v3
+      with:
+        checkout-ref: ${env.CHECKOUT_REF}
+      env:
+        CHECKOUT_REF: ${{ inputs.checkout-ref }}
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      shell: bash
+
+    - name: Bump version and push package files
+      run: |
+        set -xeu
+
+        # Update version in package.json and package-lock.json without creating a git tag
+        version_label="$(echo "${LABEL_NAME}" | cut -d'/' -f2)"
+        echo "Bumping version to $version_label"
+        new_version=$(npm version "$version_label" --no-git-tag-version)
+        echo "New version is $new_version"
+
+        # Manually commit the updated package files because npm version --no-git-tag-version does not auto-commit
+        git add package.json package-lock.json
+        git commit -m "chore(release): bump version to $new_version"
+
+        # Push the changes to the remote repository
+        git push
+      shell: bash
+      env:
+        LABEL_NAME: ${{ inputs.label-name }}
