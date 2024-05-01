@@ -16,7 +16,7 @@
 
 ```yaml
 steps:
-  - name: Setup Git
+  - name: Configure Git
     uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v0 # This is the version of the action
 ```
 
