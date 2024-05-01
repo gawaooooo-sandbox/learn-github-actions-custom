@@ -1,0 +1,51 @@
+name: Setup Git
+description: |
+  このアクションは、Gitの設定ファイルで以下のボットアカウントを設定します:
+
+  - **user.name**: `github-actions[bot]`
+  - **user.email**: `41898282+github-actions[bot]@users.noreply.github.com`
+
+  この設定は、コードのコミットやプッシュを含むワークフローに役立ちます。ただし、設定が既に行われている場合はスキップされます。
+
+  ## Usage
+  以下のようにワークフローに組み込んで使用します。
+
+  ```yaml
+  steps:
+    - name: Setup Git
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v0 # This is the version of the action
+  ```
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set Bot User Name if Unset
+      run: |
+        echo "::group::Setting Bot User Name"
+        set -eu
+        existing_name="$(git config --global user.name || echo '')"
+        if [ -z "$existing_name" ]; then
+          git config --global user.name "github-actions[bot]"
+        else
+          echo "::notice title=User Name Configuration Skipped::Git user name '$existing_name' is already set. No further action taken."
+        fi
+        echo "::endgroup::"
+      shell: bash
+
+    # Note:
+    # このメールアドレスには「41898282」というユーザーIDが含まれており、
+    # それはボットアカウントに関連付けられています。
+    # 詳細は以下のリンクを参照してください：
+    # https://github.com/orgs/community/discussions/26560
+    - name: Set Bot User Email if Unset
+      run: |
+        echo "::group::Setting Bot User Email"
+        set -eu
+        existing_email="$(git config --global user.email || echo '')"
+        if [ -z "$existing_email" ]; then
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        else
+          echo "::notice title=User Email Configuration Skipped::Git user email '$existing_email' is already set. No further action taken."
+        fi
+        echo "::endgroup::"
+      shell: bash
