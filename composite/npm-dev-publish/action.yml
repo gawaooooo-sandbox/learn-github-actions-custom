@@ -65,10 +65,7 @@ runs:
         npm-scope: "@${{ github.repository_owner }}"
 
     - name: Configure Git
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      shell: bash
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v3
 
     - name: Update npm version and publish
       id: new_version

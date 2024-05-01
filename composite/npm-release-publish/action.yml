@@ -84,10 +84,7 @@ runs:
 
     - name: Configure Git
       if: env.contains_release == 'true'
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      shell: bash
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v3
 
     - name: Extract and Tag Version
       if: env.contains_release == 'true'
