@@ -52,8 +52,8 @@ runs:
             echo "Setting: $key=$value"
             echo "$key=$value" >> "$GITHUB_ENV"
           else
-            echo "Error: Invalid key format '$key'" >&2
-            exit 1  # 不正なキーが検出された場合はエラーで終了
+            echo "::error::Invalid key format '$key'" >&2
+            exit 1 # 不正なキーが検出された場合はエラーで終了
           fi
         done
       shell: bash
