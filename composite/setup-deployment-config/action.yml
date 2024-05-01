@@ -72,7 +72,7 @@ runs:
         s3_command='${{ inputs.s3-sync-command }}'
         # Validate the input to make sure it does not contain any shell control characters
         if [[ "$s3_command" =~ [\;\&\|] ]]; then
-          echo "Error: Invalid characters in S3 sync command"
+          echo "::error::Invalid characters in S3 sync command"
           exit 1
         fi
 
