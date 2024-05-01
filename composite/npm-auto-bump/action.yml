@@ -59,10 +59,7 @@ runs:
         node-version-file: ${{ inputs.node-version-file }}
 
     - name: Configure Git
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      shell: bash
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v3
 
     - name: Bump version and push package files
       run: |
