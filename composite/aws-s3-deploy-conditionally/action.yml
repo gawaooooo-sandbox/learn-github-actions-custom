@@ -80,11 +80,34 @@ runs:
         role-to-assume: ${{ inputs.aws-role-arn }}
         aws-region: ${{ inputs.aws-region }}
 
-    - name: Deploy to ${{ inputs.environment }} [aws s3 sync ${{ inputs.s3-sync-command }}]
+    # - name: Deploy to ${{ inputs.environment }} [aws s3 sync ${{ inputs.s3-sync-command }}]
+    #   if: ${{ fromJSON(inputs.enable-aws-deploy) }}
+    #   run: |
+    #     set -xeu
+
+    #     echo "Deploying to ${{ inputs.environment }} [aws s3 sync ${{ inputs.s3-sync-command}}]]"
+    #     aws s3 sync ${{ inputs.s3-sync-command }}
+    #   shell: bash
+
+    - name: Deploy to ${{ inputs.environment }} [aws s3 sync ${{ inputs.s3-sync-command }}] and check return code
       if: ${{ fromJSON(inputs.enable-aws-deploy) }}
       run: |
         set -xeu
 
-        echo "Deploying to ${{ inputs.environment }} [aws s3 sync ${{ inputs.s3-sync-command}}]]"
-        aws s3 sync ${{ inputs.s3-sync-command }}
+        if aws s3 sync ${{ inputs.s3-sync-command }}; then
+          {
+            echo "## AWS S3 Sync succeeded 🚀"
+            echo "Running command 'aws s3 sync ${{ inputs.s3-sync-command }}'"
+          } >> "$GITHUB_STEP_SUMMARY"
+        else
+          ret_code=$?
+          echo "::error title=AWS S3 Sync Failure::Failed with return code $ret_code"
+
+          {
+            echo "## AWS S3 Sync failed ❌"
+            echo "Running command 'aws s3 sync ${{ inputs.s3-sync-command }}'"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit $ret_code
+        fi
       shell: bash
