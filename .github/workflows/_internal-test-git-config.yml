@@ -1,0 +1,66 @@
+name: Test for git-config
+run-name: ${{ github.workflow }} on ${{ github.ref_type }} ${{ github.ref_name }} [${{ github.sha }}]
+
+on:
+  pull_request:
+    paths:
+      - "composite/git-config/action.yml"
+      - ".github/workflows/_internal-test-git-config.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: test-git-config-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Exercise
+        uses: ./composite/git-config
+
+      - name: Verify
+        run: |
+          set -x
+
+          USER_NAME=$(git config --global user.name)
+          USER_EMAIL=$(git config --global user.email)
+
+          test "$USER_NAME" = "github-actions[bot]" || { echo "Error: user.name is not set correctly."; exit 1; }
+          test "$USER_EMAIL" = "41898282+github-actions[bot]@users.noreply.github.com" || { echo "Error: user.email is not set correctly."; exit 1; }
+
+  test-already-set:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        run: |
+          set -x
+          git config --global user.name "test-user"
+          git config --global user.email "test-user@example.com"
+
+      - name: Exercise
+        uses: ./composite/git-config
+
+      - name: Verify
+        run: |
+          set -x
+
+          USER_NAME=$(git config --global user.name)
+          USER_EMAIL=$(git config --global user.email)
+
+          test "$USER_NAME" = "test-user" || { echo "Error: user.name is not set correctly."; exit 1; }
+          test "$USER_EMAIL" = "test-user@example.com" || { echo "Error: user.email is not set correctly."; exit 1; }
