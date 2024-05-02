@@ -19,7 +19,7 @@ concurrency: ${{ github.workflow }}
 
 jobs:
   call:
-    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/github-release.yml@v3
+    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/github-release.yml@v4
     with:
       level: ${{ inputs.level }}
     permissions:
