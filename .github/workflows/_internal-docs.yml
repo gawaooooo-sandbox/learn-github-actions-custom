@@ -19,7 +19,7 @@ defaults:
 
 jobs:
   generate:
-    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/docs-generator.yml@v3
+    uses: gawaooooo-sandbox/learn-github-actions-reusable-workflows/.github/workflows/docs-generator.yml@v4
     with:
       doc-type: composite
       commit-message: Update composite action document
