@@ -68,6 +68,8 @@ runs:
         npm-scope: "@${{ github.repository_owner }}"
         node-auth-token: ${{ inputs.github-token }}
 
+    # master or main branch 以外の場合は、npm version でバージョンを更新し、コミット
+    # default branch に push ができないため
     - name: Update npm version and commit
       if: github.ref != 'refs/heads/master' && github.ref != 'refs/heads/main'
       uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-bump-and-commit@feature/update-npm-publish
