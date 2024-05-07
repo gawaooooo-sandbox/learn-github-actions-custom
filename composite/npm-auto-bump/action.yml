@@ -2,6 +2,8 @@ name: Npm Auto Bump
 description: |
   このアクションは、GitHubのラベルに基づいてNPMパッケージのバージョンを自動的にアップデートし、更新されたパッケージファイルをリポジトリにプッシュします。
 
+  **Gitタグは作成せず、タグのプッシュも行いません。**
+
   `release/patch`、`release/minor`、`release/major`のいずれかのラベルがプルリクエストに適用された場合に使用します。
 
   ## Usage
