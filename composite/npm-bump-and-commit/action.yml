@@ -12,7 +12,6 @@ description: |
       uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-bump-and-commit@v0 # This is the version of the action
       with:
         version-type: 'patch'
-        github-token: 'YOUR_GITHUB_TOKEN'  # ここにGitHub Actionsが提供するデフォルトのトークンを指定
   ```
 
 inputs:
@@ -31,10 +30,6 @@ inputs:
       Node.jsのバージョンを指定するファイルのパス
     required: false
     default: ".nvmrc"
-  github-token:
-    description: |
-      GitHubトークン
-    required: true
 
 outputs:
   package-version:
