@@ -80,7 +80,7 @@ runs:
       id: tag_version
       uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-version-tag-push@feature/update-npm-publish
 
-    - name: Npm publish
+    - name: Publish to GitHub Packages
       run: |
         set -xeu
         npm publish --tag ${{ inputs.publish-tag }}
