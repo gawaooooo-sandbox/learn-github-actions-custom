@@ -1,0 +1,57 @@
+name: Create Version Tag
+description: |
+  このアクションは、package.jsonからバージョンを抽出し、Gitタグを作成してプッシュします。
+
+  使用する前に、対象のリポジトリのコードをチェックアウトする必要があります。
+
+  ## Usage
+
+  ```yaml
+  steps:
+    - name: Create version tag
+      id: tag
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-version-tag-push@v0 # This is the version of the action
+  ```
+
+inputs:
+  package-json-path:
+    description: Path to the package.json file.
+    required: false
+    default: "package.json"
+outputs:
+  tag:
+    description: The created Git tag.
+    value: ${{ steps.tag_version.outputs.tag }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Fetch Tags
+      run: |
+        set -xeu
+        git fetch --tags
+      shell: bash
+
+    - name: Extract and Tag Version
+      id: tag_version
+      run: |
+        set -xeu
+
+        # Extract the version number from package.json using jq
+        version=$(jq -r '.version' ${{ inputs.package-json-path }})
+        echo "Extracted version: $version"
+
+        # Check if the tag already exists
+        if git rev-parse "v${version}" >/dev/null 2>&1; then
+          echo "::error::Tag 'v${version}' already exists. Please update the version number or delete the existing tag."
+          exit 1
+        fi
+
+        # Create a new Git tag with the extracted version number
+        git tag "v${version}"
+
+        # Push the new tag to the repository
+        git push origin "v${version}"
+
+        echo "tag=v${version}" >> "$GITHUB_OUTPUT"
+      shell: bash
