@@ -1,0 +1,112 @@
+name: Publish GitHub Package on Merge
+description: |
+  このアクションは、マージされたプルリクエストに基づいてGitHub Packagesにパッケージを自動公開し、GitHubリリースを作成します。
+
+  'release/' で始まるラベルがプルリクエストに適用されている場合にのみ、バージョンタグを生成し、パッケージを公開します。
+
+  ## Usage
+
+  ```yaml
+  steps:
+    - name: Publish release package
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-auto-publish-on-merge@v0 # This is the version of the action
+      with:
+        pr-number: '1'
+        github-token: 'YOUR_GITHUB_TOKEN'  # ここにGitHub Actionsが提供するデフォルトのトークンを指定
+  ```
+
+inputs:
+  pr-number:
+    description: |
+      プルリクエスト番号
+    required: true
+  github-token:
+    description: |
+      GitHubトークン
+    required: true
+  checkout-ref:
+    description: |
+      チェックアウトするリファレンス
+    required: false
+    default: ${{ github.ref }}
+  node-version-file:
+    description: |
+      Node.jsのバージョンを指定するファイルのパス
+    required: false
+    default: ".nvmrc"
+  npm-install-command:
+    description: |
+      npm install コマンド
+    required: false
+    default: "ci"
+
+runs:
+  using: composite
+  steps:
+    - name: Inputs summary
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/inputs-summary@v3
+      with:
+        workflow-inputs: ${{ toJSON(inputs) }}
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.checkout-ref }}
+
+    - name: Check PR labels
+      id: labels
+      run: |
+        set -xeu
+
+        json=$(gh pr view "$PR_NUMBER" --json labels | jq -c '.labels|map(.name)')
+        echo "Fetched labels: $json"
+
+        # Check if any label starts with 'release/'
+        contains_release=$(echo "$json" | jq 'any(startswith("release/"))')
+        echo "Contains 'release/' label: $contains_release"
+        # Set output for later steps
+        echo "contains_release=$contains_release" >> "$GITHUB_ENV"
+
+        # If no 'release/' label found, exit job with success
+        if [ "$contains_release" = "false" ]; then
+          echo "No 'release/' label found, skipping job."
+          exit 0 # Exiting with success status
+        fi
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+
+    - name: Setup Node.js and Install dependencies
+      if: env.contains_release == 'true'
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/node-setup-and-dependencies@v3
+      with:
+        skip-checkout: true
+        node-version-file: ${{ inputs.node-version-file }}
+        npm-install-command: ${{ inputs.npm-install-command }}
+        npm-registry-url: https://npm.pkg.github.com
+        npm-scope: "@${{ github.repository_owner }}"
+
+    - name: Configure Git
+      if: env.contains_release == 'true'
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v3
+
+    - name: Npm version tag push
+      id: tag_version
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-version-tag-push@feature/update-npm-publish
+
+    - name: Publish to GitHub Packages
+      if: env.contains_release == 'true'
+      run: |
+        set -xeu
+        npm publish
+      shell: bash
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.github-token }}
+
+    - name: Create GitHub Release
+      if: env.contains_release == 'true'
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/github-release-with-summary@feature/update-npm-publish
+      with:
+        version-tag: ${{ steps.tag_version.outputs.tag }}
+        github-token: ${{ inputs.github-token }}
