@@ -1,4 +1,4 @@
-name: Publish Development Package Manually
+name: Publish GitHub Package Manually
 description: |
   このアクションは、手動で開発中のパッケージをGitHub Packagesに公開します。
 
