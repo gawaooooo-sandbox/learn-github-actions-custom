@@ -30,6 +30,16 @@ inputs:
       Node.jsのバージョンを指定するファイルのパス
     required: false
     default: ".nvmrc"
+  skip-checkout:
+    description: |
+      チェックアウトをスキップするかどうか
+    required: false
+    default: "false"
+  skip-node-setup:
+    description: |
+      Node.jsのセットアップをスキップするかどうか
+    required: false
+    default: "false"
 
 outputs:
   package-version:
@@ -57,11 +67,13 @@ runs:
       shell: bash
 
     - name: Checkout code
+      if: ${{ !fromJSON(inputs.skip-checkout) }}
       uses: actions/checkout@v4
       with:
         ref: ${{ inputs.checkout-ref }}
 
     - name: Setup Node.js
+      if: ${{ !fromJSON(inputs.skip-node-setup) }}
       uses: actions/setup-node@v4
       with:
         node-version-file: ${{ inputs.node-version-file }}
