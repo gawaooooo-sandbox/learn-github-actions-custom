@@ -1,0 +1,107 @@
+name: Update npm version and commit
+description: |
+  このアクションは、npm version コマンドを使用してパッケージのバージョンを更新し、変更をコミットします。
+
+  **Gitタグは作成せず、タグのプッシュも行いません。**
+
+  ## Usage
+
+  ```yaml
+  steps:
+    - name: Update npm version and commit
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-bump-and-commit@v0 # This is the version of the action
+      with:
+        version-type: 'patch'
+  ```
+
+inputs:
+  version-type:
+    description: |
+      npm version コマンドの引数。
+      'patch', 'minor', 'major'などの release タイプを指定することを想定。
+    required: true
+  checkout-ref:
+    description: |
+      チェックアウトするリファレンス
+    required: false
+    default: ${{ github.head_ref || github.ref }}
+  node-version-file:
+    description: |
+      Node.jsのバージョンを指定するファイルのパス
+    required: false
+    default: ".nvmrc"
+  skip-checkout:
+    description: |
+      チェックアウトをスキップするかどうか
+    required: false
+    default: "false"
+  skip-node-setup:
+    description: |
+      Node.jsのセットアップをスキップするかどうか
+    required: false
+    default: "false"
+
+outputs:
+  package-version:
+    description: |
+      更新されたパッケージのバージョン
+    value: ${{ steps.new_version.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Inputs summary
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/inputs-summary@v3
+      with:
+        workflow-inputs: ${{ toJSON(inputs) }}
+
+    - name: Check version type
+      run: |
+        set -xeu
+
+        version_type="${{ inputs.version-type }}"
+        if [[ ! "$version_type" =~ ^(patch|minor|major|prepatch|preminor|premajor)$ ]]; then
+          echo "::error::Invalid version type '$version_type'. Valid types are 'patch', 'minor', 'major', 'prepatch', 'preminor', and 'premajor'. Please ensure you specify one of these types."
+          exit 1
+        fi
+      shell: bash
+
+    - name: Checkout code
+      if: ${{ !fromJSON(inputs.skip-checkout) }}
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.checkout-ref }}
+
+    - name: Setup Node.js
+      if: ${{ !fromJSON(inputs.skip-node-setup) }}
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: ${{ inputs.node-version-file }}
+
+    - name: Configure Git
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v3
+
+    - name: Update npm version
+      id: new_version
+      run: |
+        set -xeu
+
+        # Update version in package.json and package-lock.json without creating a git tag
+        echo "Bumping version to ${{ inputs.version-type }}"
+        version=$(npm version "${{ inputs.version-type }}" --no-git-tag-version)
+        echo "New version is $version"
+        echo "version=${version}" >> "$GITHUB_OUTPUT"
+      shell: bash
+
+    - name: Commit and
+      if: success()
+      run: |
+        set -xeu
+
+        # Manually commit the updated package files because npm version --no-git-tag-version does not auto-commit
+        git add package.json package-lock.json
+        git commit -m "chore(release): bump version to ${{ steps.new_version.outputs.version }}"
+
+        # Push the changes to the remote repository
+        git push
+      shell: bash

@@ -1,21 +1,29 @@
-name: Publishing Release Package
+name: Publish GitHub Package on Merge
 description: |
-  このアクションは、プルリクエストに適用された特定のラベルに基づいてGitHub Packagesにパッケージを公開し、GitHubリリースを作成します。
+  このアクションは、マージされたプルリクエストに基づいてGitHub Packagesにパッケージを自動公開し、GitHubリリースを作成します。
 
-  ラベルが 'release/' で始まる場合のみ、バージョンタグを生成し、パッケージを公開します。
+  'release/' で始まるラベルがプルリクエストに適用されている場合にのみ、バージョンタグを生成し、パッケージを公開します。
 
   ## Usage
 
   ```yaml
   steps:
     - name: Publish release package
-      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-release-publish@v0 # This is the version of the action
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-auto-publish-on-merge@v0 # This is the version of the action
       with:
         pr-number: '1'
         github-token: 'YOUR_GITHUB_TOKEN'  # ここにGitHub Actionsが提供するデフォルトのトークンを指定
   ```
 
 inputs:
+  pr-number:
+    description: |
+      プルリクエスト番号
+    required: true
+  github-token:
+    description: |
+      GitHubトークン
+    required: true
   checkout-ref:
     description: |
       チェックアウトするリファレンス
@@ -31,14 +39,6 @@ inputs:
       npm install コマンド
     required: false
     default: "ci"
-  pr-number:
-    description: |
-      プルリクエスト番号
-    required: true
-  github-token:
-    description: |
-      GitHubトークン
-    required: true
 
 runs:
   using: composite
@@ -91,33 +91,9 @@ runs:
       if: env.contains_release == 'true'
       uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v3
 
-    - name: Extract and Tag Version
-      if: env.contains_release == 'true'
+    - name: Npm version tag push
       id: tag_version
-      run: |
-        set -xeu
-
-        # Fetch tags from the remote to make sure we have the latest tags information
-        git fetch --tags
-
-        # Extract the version number from package.json using jq
-        version=$(jq -r '.version' package.json)
-        echo "Extracted version: $version"
-
-        # Check if the tag already exists
-        if git rev-parse "v${version}" >/dev/null 2>&1; then
-          echo "::error::Tag 'v${version}' already exists. Please update the version number or delete the existing tag."
-          exit 1
-        fi
-
-        # Create a new Git tag with the extracted version number
-        git tag "v${version}"
-
-        # Push the new tag to the repository
-        git push origin "v${version}"
-
-        echo "tag=v${version}" >> "$GITHUB_OUTPUT"
-      shell: bash
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-version-tag-push@feature/update-npm-publish
 
     - name: Publish to GitHub Packages
       if: env.contains_release == 'true'
@@ -130,19 +106,7 @@ runs:
 
     - name: Create GitHub Release
       if: env.contains_release == 'true'
-      run: |
-        set -xeu
-        gh release create ${{ steps.tag_version.outputs.tag }} --title ${{ steps.tag_version.outputs.tag }} --generate-notes
-      shell: bash
-      env:
-        GITHUB_TOKEN: ${{ inputs.github-token }}
-
-    - name: Append release success to job summary
-      if: success() && env.contains_release == 'true' # Only append to the job summary if the job was successful and 'release/' label is present
-      run: |
-        {
-          echo "## Release Details ✨"
-          echo "Release for version ${{ steps.tag_version.outputs.tag }} was successfully created 🎉."
-          echo "You can view the release [here](https://github.com/${{ github.repository }}/releases/tag/${{ steps.tag_version.outputs.tag }})."
-        } >> "$GITHUB_STEP_SUMMARY"
-      shell: bash
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/github-release-with-summary@feature/update-npm-publish
+      with:
+        version-tag: ${{ steps.tag_version.outputs.tag }}
+        github-token: ${{ inputs.github-token }}
