@@ -92,6 +92,7 @@ runs:
       uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v3
 
     - name: Npm version tag push
+      if: env.contains_release == 'true'
       id: tag_version
       uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-version-tag-push@v4
 
