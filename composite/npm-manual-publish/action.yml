@@ -72,7 +72,7 @@ runs:
     # default branch に push ができないため
     - name: Update npm version and commit
       if: github.ref != 'refs/heads/master' && github.ref != 'refs/heads/main'
-      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-bump-and-commit@4
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-bump-and-commit@v4
       with:
         version-type: ${{ inputs.version-type }}
         skip-checkout: "true"
