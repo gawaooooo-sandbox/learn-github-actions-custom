@@ -93,7 +93,7 @@ runs:
 
     - name: Npm version tag push
       id: tag_version
-      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-version-tag-push@feature/update-npm-publish
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-version-tag-push@v4
 
     - name: Publish to GitHub Packages
       if: env.contains_release == 'true'
@@ -106,7 +106,7 @@ runs:
 
     - name: Create GitHub Release
       if: env.contains_release == 'true'
-      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/github-release-with-summary@feature/update-npm-publish
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/github-release-with-summary@v4
       with:
         version-tag: ${{ steps.tag_version.outputs.tag }}
         github-token: ${{ inputs.github-token }}

@@ -66,7 +66,7 @@ runs:
       shell: bash
 
     - name: Npm bump and commit
-      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-bump-and-commit@feature/update-npm-publish
+      uses: gawaooooo-sandbox/learn-github-actions-custom/composite/npm-bump-and-commit@v4
       with:
         version-type: ${{ steps.version.outputs.version_label }}
         checkout-ref: ${{ inputs.checkout-ref }}
