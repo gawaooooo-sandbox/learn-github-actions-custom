@@ -71,34 +71,3 @@ runs:
         version-type: ${{ steps.version.outputs.version_label }}
         checkout-ref: ${{ inputs.checkout-ref }}
         node-version-file: ${{ inputs.node-version-file }}
-
-    # - name: Checkout code
-    #   uses: actions/checkout@v4
-    #   with:
-    #     ref: ${{ inputs.checkout-ref }}
-
-    # - name: Setup Node.js
-    #   uses: actions/setup-node@v4
-    #   with:
-    #     node-version-file: ${{ inputs.node-version-file }}
-
-    # - name: Configure Git
-    #   uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v3
-
-    # - name: Bump version and push package files
-    #   run: |
-    #     set -xeu
-
-    #     # Update version in package.json and package-lock.json without creating a git tag
-    #     version_label="$(echo "${{ inputs.label-name }}" | cut -d'/' -f2)"
-    #     echo "Bumping version to $version_label"
-    #     new_version=$(npm version "$version_label" --no-git-tag-version)
-    #     echo "New version is $new_version"
-
-    #     # Manually commit the updated package files because npm version --no-git-tag-version does not auto-commit
-    #     git add package.json package-lock.json
-    #     git commit -m "chore(release): bump version to $new_version"
-
-    #     # Push the changes to the remote repository
-    #     git push
-    #   shell: bash
