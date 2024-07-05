@@ -1,0 +1,4 @@
+package-lock.json
+_site
+_config.yml
+*.md
