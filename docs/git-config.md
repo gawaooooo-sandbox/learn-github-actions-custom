@@ -1,4 +1,19 @@
+---
+title: git-config
+layout: default
+permalink: /git-config/
+---
 
+# git-config
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 <!-- actdocs start -->
 
