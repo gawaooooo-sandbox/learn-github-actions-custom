@@ -25,10 +25,6 @@ steps:
 | version-tag | リリースに使用するバージョンタグ | n/a | yes |
 | summary-output | ジョブサマリーにリリース情報を出力するかどうか | `true` | no |
 
-## Outputs
-
-N/A
-
 <!-- actdocs end -->
 
 

@@ -15,6 +15,7 @@ layout: default
 ---
 
 {% raw %}
+
 <!-- actdocs start -->
 
 ## Description
@@ -38,17 +39,17 @@ steps:
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
 | version-type | <code>npm version コマンドの引数。<br>'patch', 'minor', 'major'などの release タイプを指定することを想定。</code> | n/a | yes |
-| checkout-ref | <pre>チェックアウトするリファレンス</pre> | `${{ github.head_ref || github.ref }}` | no |
-| node-version-file | <pre>Node.jsのバージョンを指定するファイルのパス</pre> | `.nvmrc` | no |
-| skip-checkout | <pre>チェックアウトをスキップするかどうか</pre> | `false` | no |
-| skip-node-setup | <pre>Node.jsのセットアップをスキップするかどうか</pre> | `false` | no |
+| checkout-ref | <code>チェックアウトするリファレンス</code> | `${{ github.head_ref || github.ref }}` | no |
+| node-version-file | <code>Node.jsのバージョンを指定するファイルのパス</code> | `.nvmrc` | no |
+| skip-checkout | <code>チェックアウトをスキップするかどうか</code> | `false` | no |
+| skip-node-setup | <code>Node.jsのセットアップをスキップするかどうか</code> | `false` | no |
 
 ## Outputs
 
 | Name | Description |
 | :--- | :---------- |
-| package-version | <pre>更新されたパッケージのバージョン</pre> |
+| package-version | <code>更新されたパッケージのバージョン</code> |
 
 <!-- actdocs end -->
-{% endraw %}
 
+{% endraw %}

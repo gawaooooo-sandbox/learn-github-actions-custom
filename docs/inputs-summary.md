@@ -23,11 +23,7 @@ This serialization method ensures that the JSON format is correctly handled and 
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| workflow-inputs | <pre>The inputs provided to the workflow.<br>Pass inputs context as a JSON string, or use `toJSON` function to serialize inputs in the workflow file.</pre> | n/a | yes |
-
-## Outputs
-
-N/A
+| workflow-inputs | <code>The inputs provided to the workflow.<br>Pass inputs context as a JSON string, or use `toJSON` function to serialize inputs in the workflow file.</code> | n/a | yes |
 
 <!-- actdocs end -->
 
