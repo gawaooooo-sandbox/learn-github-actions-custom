@@ -1,5 +1,20 @@
-# node-setup-and-dependencies
+---
+title: node-setup-and-dependencies
+layout: default
+---
 
+# node-setup-and-dependencies
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+{% raw %}
 <!-- actdocs start -->
 
 ## Description
@@ -61,5 +76,4 @@ This setup is crucial for ensuring private packages are handled securely and eff
 N/A
 
 <!-- actdocs end -->
-
-
+{% endraw %}
