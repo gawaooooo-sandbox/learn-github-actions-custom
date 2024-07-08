@@ -35,14 +35,6 @@ steps:
     uses: gawaooooo-sandbox/learn-github-actions-custom/composite/git-config@v0 # This is the version of the action
 ```
 
-## Inputs
-
-N/A
-
-## Outputs
-
-N/A
-
 <!-- actdocs end -->
 
 
