@@ -1,5 +1,20 @@
+---
+title: npm-bump-and-commit
+layout: default
+---
 
+# npm-bump-and-commit
+{: .no_toc }
 
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+{% raw %}
 <!-- actdocs start -->
 
 ## Description
@@ -22,7 +37,7 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| version-type | <pre>npm version コマンドの引数。<br>'patch', 'minor', 'major'などの release タイプを指定することを想定。</pre> | n/a | yes |
+| version-type | <code>npm version コマンドの引数。<br>'patch', 'minor', 'major'などの release タイプを指定することを想定。</code> | n/a | yes |
 | checkout-ref | <pre>チェックアウトするリファレンス</pre> | `${{ github.head_ref || github.ref }}` | no |
 | node-version-file | <pre>Node.jsのバージョンを指定するファイルのパス</pre> | `.nvmrc` | no |
 | skip-checkout | <pre>チェックアウトをスキップするかどうか</pre> | `false` | no |
@@ -35,5 +50,5 @@ steps:
 | package-version | <pre>更新されたパッケージのバージョン</pre> |
 
 <!-- actdocs end -->
-
+{% endraw %}
 

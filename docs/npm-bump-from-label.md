@@ -1,4 +1,20 @@
+---
+title: npm-bump-from-label
+layout: default
+---
 
+# npm-bump-from-label
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+{% raw %}
 
 <!-- actdocs start -->
 
@@ -37,4 +53,4 @@ N/A
 
 <!-- actdocs end -->
 
-
+{% endraw %}

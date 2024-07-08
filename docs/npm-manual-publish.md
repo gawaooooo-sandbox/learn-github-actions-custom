@@ -1,4 +1,20 @@
+---
+title: npm-manual-publish
+layout: default
+---
 
+# npm-manual-publish
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+{% raw %}
 
 <!-- actdocs start -->
 
@@ -39,4 +55,4 @@ N/A
 
 <!-- actdocs end -->
 
-
+{% endraw %}
