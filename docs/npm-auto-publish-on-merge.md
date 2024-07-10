@@ -39,11 +39,11 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| github-token | <code>GitHubトークン</code> | n/a | yes |
-| pr-number | <code>プルリクエスト番号</code> | n/a | yes |
-| checkout-ref | <code>チェックアウトするリファレンス</code> | `${{ github.ref }}` | no |
-| node-version-file | <code>Node.jsのバージョンを指定するファイルのパス</code> | `.nvmrc` | no |
-| npm-install-command | <code>npm install コマンド</code> | `ci` | no |
+| github-token | GitHubトークン | n/a | yes |
+| pr-number | プルリクエスト番号 | n/a | yes |
+| checkout-ref | チェックアウトするリファレンス | `${{ github.ref }}` | no |
+| node-version-file | Node.jsのバージョンを指定するファイルのパス | `.nvmrc` | no |
+| npm-install-command | npm install コマンド | `ci` | no |
 
 <!-- actdocs end -->
 

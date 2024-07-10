@@ -42,12 +42,12 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| github-token | <code>GitHubトークン</code> | n/a | yes |
-| publish-tag | <code>npm publish コマンドの --tag オプション。<br>'latest', 'beta', 'alpha', 'next'などがあります。<br>開発中のバージョンをテスト目的で公開する場合は'next'タグが適しています。</code> | n/a | yes |
-| version-type | <code>npm version コマンドの引数。<br>'prepatch', 'preminor', 'premajor'などの pre release タイプを指定することを想定。</code> | n/a | yes |
-| checkout-ref | <code>チェックアウトするリファレンス</code> | `${{ github.head_ref || github.ref }}` | no |
-| node-version-file | <code>Node.jsのバージョンを指定するファイルのパス</code> | `.nvmrc` | no |
-| npm-install-command | <code>npm install コマンド</code> | `ci` | no |
+| github-token | GitHubトークン | n/a | yes |
+| publish-tag | npm publish コマンドの `--tag` オプション。<br>`latest`, `beta`, `alpha`, `next`などがあります。<br>開発中のバージョンをテスト目的で公開する場合は`next`タグが適しています。 | n/a | yes |
+| version-type | npm version コマンドの引数。<br>`prepatch`, `preminor`, `premajor`などの pre release タイプを指定することを想定。 | n/a | yes |
+| checkout-ref | チェックアウトするリファレンス | `${{ github.head_ref || github.ref }}` | no |
+| node-version-file | Node.jsのバージョンを指定するファイルのパス | `.nvmrc` | no |
+| npm-install-command | npm install コマンド | `ci` | no |
 
 <!-- actdocs end -->
 

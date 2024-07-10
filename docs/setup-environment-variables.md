@@ -44,7 +44,7 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| environment-variables | <code>Required input to dynamically set the environment variables for your workflow.<br>Input these as a space-separated string of key-value pairs, where each pair is enclosed in quotes and keys are linked to their values by an equals sign.<br>This format ensures that the variables can be parsed and set correctly within the workflow.<br>For example, provide inputs like 'TEST="abc" URL="http://example.com" SERVICE="app"' to seamlessly integrate these variables into your build and deployment processes.</code> | n/a | yes |
+| environment-variables | Required input to dynamically set the environment variables for your workflow.<br>Input these as a space-separated string of key-value pairs, where each pair is enclosed in quotes and keys are linked to their values by an equals sign.<br>This format ensures that the variables can be parsed and set correctly within the workflow.<br><br>For example, provide inputs like `TEST="abc" URL="http://example.com" SERVICE="app"` to seamlessly integrate these variables into your build and deployment processes. | n/a | yes |
 
 <!-- actdocs end -->
 

@@ -49,15 +49,15 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| s3-sync-command | <code>Specifies the command to sync files to an S3 bucket.<br>Format it as a full command line string, e.g., './dist s3://my-bucket --delete'.</code> | n/a | yes |
-| build-environments | <code>Sets environment variables for the build process.<br>Provide a string of key-value pairs separated by spaces, e.g., 'BASE_URL="http://example.com" SERVICE="app"'.</code> | `` | no |
+| s3-sync-command | Specifies the command to sync files to an S3 bucket.<br><br>Format it as a full command line string, e.g., `./dist s3://my-bucket --delete`. | n/a | yes |
+| build-environments | Sets environment variables for the build process.<br><br>Provide a string of key-value pairs separated by spaces, e.g., `BASE_URL="http://example.com" SERVICE="app"`. | `` | no |
 
 ## Outputs
 
 | Name | Description |
 | :--- | :---------- |
-| build-environments | <code>Returns the set build environment variables as a string of key-value pairs.</code> |
-| s3-sync-command | <code>Returns the formatted command used for syncing files to the S3 bucket.</code> |
+| build-environments | Returns the set build environment variables as a string of key-value pairs. |
+| s3-sync-command | Returns the formatted command used for syncing files to the S3 bucket. |
 
 <!-- actdocs end -->
 
