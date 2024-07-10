@@ -15,7 +15,7 @@ ACTION_FILES := $(wildcard $(ACTIONS_DIR)/*/action.yml)
 DOC_FILES := $(patsubst $(ACTIONS_DIR)/%/action.yml,$(DOCS_DIR)/%.md,$(ACTION_FILES))
 
 .PHONY: docs
-docs: create_docs_dir generate_docs convert_pre_tags ## generate docs for all actions
+docs: create_docs_dir generate_docs remove_pre_tags ## generate docs for all actions
 
 .PHONY: create_docs_dir
 create_docs_dir:
@@ -31,11 +31,11 @@ generate_docs: create_docs_dir
 		$(ACTDOCS_IMAGE) inject --sort --omit --file=$$output $$action; \
 	done
 
-.PHONY: convert_pre_tags
-convert_pre_tags:
-	@echo "Converting <pre> tags to <div> tags"
+.PHONY: remove_pre_tags
+remove_pre_tags:
+	@echo "Removing <pre> tags"
 	@for file in $(DOC_FILES); do \
-		$(SED_INPLACE) 's/<pre>/<div style="white-space: pre-wrap;">/g; s/<\/pre>/<\/div>/g' $$file; \
+		$(SED_INPLACE) 's/<pre>//g; s/<\/pre>//g' $$file; \
 	done
 
 .PHONY: list
@@ -46,7 +46,7 @@ list: ## List all action files and their corresponding doc files
 	@echo $(DOC_FILES) | tr ' ' '\n'
 
 .PHONY: doc
-doc: create_docs_dir generate_single_doc convert_single_pre_tags ## Generate doc for a specific action. Usage: make doc ACTION=<action-name>
+doc: create_docs_dir generate_single_doc remove_single_pre_tags ## Generate doc for a specific action. Usage: make doc ACTION=<action-name>
 	@echo "Document generation and conversion complete for $(ACTION)"
 
 .PHONY: generate_single_doc
@@ -63,7 +63,7 @@ generate_single_doc:
 	@docker run --rm -v "$$(pwd):/work" -w "/work" \
 	$(ACTDOCS_IMAGE) inject --sort --omit --file=$(DOCS_DIR)/$(ACTION).md $(ACTIONS_DIR)/$(ACTION)/action.yml
 
-.PHONY: convert_single_pre_tags
-convert_single_pre_tags:
-	@echo "Converting <pre> tags to <div> tags for $(ACTION)"
-	@$(SED_INPLACE) 's/<pre>/<div style="white-space: pre-wrap;">/g; s/<\/pre>/<\/div>/g' $(DOCS_DIR)/$(ACTION).md
+.PHONY: remove_single_pre_tags
+remove_single_pre_tags:
+	@echo "Removing <pre> tags for $(ACTION)"
+	@$(SED_INPLACE) 's/<pre>//g; s/<\/pre>//g' $(DOCS_DIR)/$(ACTION).md
