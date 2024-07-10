@@ -1,4 +1,20 @@
+---
+title: github-release-with-summary
+layout: default
+---
 
+# github-release-with-summary
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+{% raw %}
 
 <!-- actdocs start -->
 
@@ -27,4 +43,4 @@ steps:
 
 <!-- actdocs end -->
 
-
+{% endraw %}

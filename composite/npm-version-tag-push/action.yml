@@ -15,12 +15,12 @@ description: |
 
 inputs:
   package-json-path:
-    description: Path to the package.json file.
+    description: Path to the `package.json` file.
     required: false
     default: "package.json"
 outputs:
   tag:
-    description: The created Git tag.
+    description: The created Git tag
     value: ${{ steps.tag_version.outputs.tag }}
 
 runs:

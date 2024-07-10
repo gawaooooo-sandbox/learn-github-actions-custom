@@ -29,14 +29,16 @@ inputs:
   build-environments:
     description: |
       Sets environment variables for the build process.
-      Provide a string of key-value pairs separated by spaces, e.g., 'BASE_URL="http://example.com" SERVICE="app"'.
+
+      Provide a string of key-value pairs separated by spaces, e.g., `BASE_URL="http://example.com" SERVICE="app"`.
     required: false
     default: ""
 
   s3-sync-command:
     description: |
       Specifies the command to sync files to an S3 bucket.
-      Format it as a full command line string, e.g., './dist s3://my-bucket --delete'.
+
+      Format it as a full command line string, e.g., `./dist s3://my-bucket --delete`.
     required: true
 
 outputs:

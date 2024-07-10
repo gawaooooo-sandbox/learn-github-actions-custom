@@ -1,13 +1,31 @@
+---
+title: aws-s3-deploy-conditionally
+layout: default
+---
+
 # aws-s3-deploy-conditionally
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+[Link button](https://just-the-docs.com){: .btn }
+
+{% raw %}
 
 <!-- actdocs start -->
 
 ## Description
 
 This action deploys files to an AWS S3 bucket conditionally.
-It uses the 'aws-actions/configure-aws-credentials' action to configure AWS credentials.
+It uses the `aws-actions/configure-aws-credentials` action to configure AWS credentials.
 
-In the 'aws-role-arn' input, provide the ARN of your AWS Role.
+In the `aws-role-arn` input, provide the ARN of your AWS Role.
 Ensure to manage sensitive values such as ARN and keys securely, preferably using GitHub Secrets.
 
 To perform deployment, the action executes a sync command to the specified S3 bucket, controlled by the 'enable-aws-deploy' input parameter.
@@ -42,4 +60,4 @@ steps:
 
 <!-- actdocs end -->
 
-
+{% endraw %}

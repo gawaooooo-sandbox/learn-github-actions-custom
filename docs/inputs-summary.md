@@ -1,4 +1,20 @@
+---
+title: inputs-summary
+layout: default
+---
+
 # inputs-summary
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+{% raw %}
 
 <!-- actdocs start -->
 
@@ -26,6 +42,8 @@ This serialization method ensures that the JSON format is correctly handled and 
 | workflow-inputs | <code>The inputs provided to the workflow.<br>Pass inputs context as a JSON string, or use `toJSON` function to serialize inputs in the workflow file.</code> | n/a | yes |
 
 <!-- actdocs end -->
+
+{% endraw %}
 
 ## 参考
 

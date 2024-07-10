@@ -23,7 +23,7 @@ inputs:
   label-name:
     description: |
       バージョンを更新するラベル名
-      release/(patch|minor|major) のいずれかを指定します
+      `release/(patch|minor|major)` のいずれかを指定します
     required: true
   checkout-ref:
     description: |
