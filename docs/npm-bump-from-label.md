@@ -43,9 +43,9 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| label-name | <code>バージョンを更新するラベル名<br>release/(patch|minor|major) のいずれかを指定します</code> | n/a | yes |
-| checkout-ref | <code>チェックアウトするリファレンス</code> | `${{ github.head_ref || github.ref }}` | no |
-| node-version-file | <code>Node.jsのバージョンを指定するファイルのパス</code> | `.nvmrc` | no |
+| label-name | バージョンを更新するラベル名<br>`release/(patch|minor|major)` のいずれかを指定します | n/a | yes |
+| checkout-ref | チェックアウトするリファレンス | `${{ github.head_ref || github.ref }}` | no |
+| node-version-file | Node.jsのバージョンを指定するファイルのパス | `.nvmrc` | no |
 
 <!-- actdocs end -->
 

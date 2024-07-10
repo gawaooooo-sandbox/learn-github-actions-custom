@@ -28,7 +28,7 @@ It uses the `aws-actions/configure-aws-credentials` action to configure AWS cred
 In the `aws-role-arn` input, provide the ARN of your AWS Role.
 Ensure to manage sensitive values such as ARN and keys securely, preferably using GitHub Secrets.
 
-To perform deployment, the action executes a sync command to the specified S3 bucket, controlled by the 'enable-aws-deploy' input parameter.
+To perform deployment, the action executes a sync command to the specified S3 bucket, controlled by the `enable-aws-deploy` input parameter.
 
 ## Usage Example
 
@@ -46,17 +46,17 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| aws-role-arn | <code>Specify the ARN of your AWS Role for this action.<br>It is recommended to manage the ARN value securely using GitHub Secrets.<br>Reference the secret in your workflow like 'aws-role-arn: <your-secret-name>'.</code> | n/a | yes |
-| environment | <code>The environment to deploy to.</code> | n/a | yes |
-| s3-sync-command | <code>Specify the command to be executed after 'aws s3 sync'.<br>This command should include the local path of the files to be deployed and the target S3 bucket path, as well as any necessary flags.<br>For example: ./dist s3://your-bucket-name/path --delete --exclude "tmp/*"</code> | n/a | yes |
-| aws-region | <code>Specify the AWS region where your S3 bucket is located.<br>This is necessary for the action to correctly interface with the correct regional endpoint of AWS S3.<br>For example, use 'us-east-1' for the North Virginia region or 'eu-central-1' for the Frankfurt region.<br>If not specified, the default region 'ap-northeast-1' (Tokyo) is used.</code> | `ap-northeast-1` | no |
-| enable-aws-deploy | <code>Whether to deploy to AWS S3.</code> | `true` | no |
+| aws-role-arn | Specify the ARN of your AWS Role for this action.<br>It is recommended to manage the ARN value securely using GitHub Secrets.<br>Reference the secret in your workflow like `aws-role-arn: <your-secret-name>`. | n/a | yes |
+| environment | The environment to deploy to. | n/a | yes |
+| s3-sync-command | Specify the command to be executed after `aws s3 sync`.<br>This command should include the local path of the files to be deployed and the target S3 bucket path, as well as any necessary flags.<br>For example: `./dist s3://your-bucket-name/path --delete --exclude "tmp/*"` | n/a | yes |
+| aws-region | Specify the AWS region where your S3 bucket is located.<br>This is necessary for the action to correctly interface with the correct regional endpoint of AWS S3.<br>For example, use `us-east-1` for the North Virginia region or `eu-central-1` for the Frankfurt region.<br>If not specified, the default region `ap-northeast-1` (Tokyo) is used. | `ap-northeast-1` | no |
+| enable-aws-deploy | Whether to deploy to AWS S3. | `true` | no |
 
 ## Outputs
 
 | Name | Description |
 | :--- | :---------- |
-| s3-deploy-command | <code>The command to sync files to the S3 bucket.</code> |
+| s3-deploy-command | The command to sync files to the S3 bucket. |
 
 <!-- actdocs end -->
 

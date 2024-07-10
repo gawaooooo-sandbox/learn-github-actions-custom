@@ -37,13 +37,13 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| package-json-path | Path to the package.json file. | `package.json` | no |
+| package-json-path | Path to the `package.json` file. | `package.json` | no |
 
 ## Outputs
 
 | Name | Description |
 | :--- | :---------- |
-| tag | The created Git tag. |
+| tag | The created Git tag |
 
 <!-- actdocs end -->
 

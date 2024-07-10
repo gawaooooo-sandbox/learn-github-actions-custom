@@ -38,17 +38,17 @@ steps:
 
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
-| version-type | <code>npm version コマンドの引数。<br>'patch', 'minor', 'major'などの release タイプを指定することを想定。</code> | n/a | yes |
-| checkout-ref | <code>チェックアウトするリファレンス</code> | `${{ github.head_ref || github.ref }}` | no |
-| node-version-file | <code>Node.jsのバージョンを指定するファイルのパス</code> | `.nvmrc` | no |
-| skip-checkout | <code>チェックアウトをスキップするかどうか</code> | `false` | no |
-| skip-node-setup | <code>Node.jsのセットアップをスキップするかどうか</code> | `false` | no |
+| version-type | npm version コマンドの引数。<br>`patch`, `minor`, `major` などの release タイプを指定することを想定。 | n/a | yes |
+| checkout-ref | チェックアウトするリファレンス | `${{ github.head_ref || github.ref }}` | no |
+| node-version-file | Node.jsのバージョンを指定するファイルのパス | `.nvmrc` | no |
+| skip-checkout | チェックアウトをスキップするかどうか | `false` | no |
+| skip-node-setup | Node.jsのセットアップをスキップするかどうか | `false` | no |
 
 ## Outputs
 
 | Name | Description |
 | :--- | :---------- |
-| package-version | <code>更新されたパッケージのバージョン</code> |
+| package-version | 更新されたパッケージのバージョン |
 
 <!-- actdocs end -->
 
