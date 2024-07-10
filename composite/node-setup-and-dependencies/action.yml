@@ -47,32 +47,35 @@ inputs:
   node-version:
     description: |
       Set the Node.js version for the project.
-      If unspecified, the version specified in the .nvmrc file will be used if present.
+      If unspecified, the version specified in the `.nvmrc` file will be used if present.
     required: false
 
   node-version-file:
     description: |
-      Set the path to a file containing the Node.js version, like .nvmrc, used for the project.
+      Set the path to a file containing the Node.js version, like `.nvmrc`, used for the project.
     required: false
     default: .nvmrc
 
   node-caching:
     description: |
       Enable caching for Node.js dependencies.
-      Specify 'npm' to cache npm dependencies, or leave blank to disable caching.
+      Specify `npm` to cache npm dependencies, or leave blank to disable caching.
     required: false
     default: npm
 
   npm-registry-url:
     description: |
       Specify the npm registry URL.
+
       For example, use `https://registry.npmjs.org` for npm's default registry or `https://npm.pkg.github.com` for GitHub Packages.
     required: false
 
   npm-scope:
     description: |
       Specify the scope for npm package operations, which is typically used with private or scoped packages.
+
       You can set this scope to match the owner of the GitHub repository by referring to the GitHub context variable for the repository owner.
+
       This is particularly useful for projects that use GitHub Packages, where the scope is often set to the repository's owner.
     required: false
 
@@ -86,20 +89,21 @@ inputs:
       Specify the Git reference (branch, tag, commit SHA) to checkout.
       This input can be set to checkout a branch other than the default GitHub Actions branch.
       You can specify this using GitHub context variables to dynamically determine which reference to use based on the current workflow context.
-      For example, to use the branch that triggered the workflow, you can reference 'github.ref' in your workflow configuration.
-      The 'github.head_ref' context is particularly useful in pull request workflows, as it refers to the head branch of the pull request which is being merged from.
+
+      For example, to use the branch that triggered the workflow, you can reference `github.ref` in your workflow configuration.
+      The `github.head_ref` context is particularly useful in pull request workflows, as it refers to the head branch of the pull request which is being merged from.
     required: false
     default: ${{ github.head_ref }}
 
   npm-install-command:
     description: |
-      Choose between 'ci' (for installing stable dependencies) or 'install' for a general installation.
+      Choose between `ci` (for installing stable dependencies) or `install` for a general installation.
     required: false
     default: "ci"
 
   npm-install-options:
     description: |
-      Specify additional options for npm install commands, such as '--ignore-scripts' to skip running scripts.
+      Specify additional options for npm install commands, such as `--ignore-scripts` to skip running scripts.
     required: false
 
   create-inputs-summary:

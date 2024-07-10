@@ -1,4 +1,20 @@
+---
+title: setup-environment-variables
+layout: default
+---
+
 # setup-environment-variables
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+{% raw %}
 
 <!-- actdocs start -->
 
@@ -32,4 +48,4 @@ steps:
 
 <!-- actdocs end -->
 
-
+{% endraw %}

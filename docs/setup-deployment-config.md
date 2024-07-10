@@ -1,4 +1,20 @@
+---
+title: setup-deployment-config
+layout: default
+---
+
 # setup-deployment-config
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+{% raw %}
 
 <!-- actdocs start -->
 
@@ -45,4 +61,4 @@ steps:
 
 <!-- actdocs end -->
 
-
+{% endraw %}

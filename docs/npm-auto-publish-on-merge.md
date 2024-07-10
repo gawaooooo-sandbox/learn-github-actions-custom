@@ -1,4 +1,20 @@
+---
+title: npm-auto-publish-on-merge
+layout: default
+---
 
+# npm-auto-publish-on-merge
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+{% raw %}
 
 <!-- actdocs start -->
 
@@ -31,4 +47,4 @@ steps:
 
 <!-- actdocs end -->
 
-
+{% endraw %}

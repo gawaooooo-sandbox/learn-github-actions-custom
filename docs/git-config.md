@@ -1,7 +1,6 @@
 ---
 title: git-config
 layout: default
-permalink: /git-config/
 ---
 
 # git-config
@@ -14,6 +13,8 @@ permalink: /git-config/
 {:toc}
 
 ---
+
+{% raw %}
 
 <!-- actdocs start -->
 
@@ -37,4 +38,4 @@ steps:
 
 <!-- actdocs end -->
 
-
+{% endraw %}
