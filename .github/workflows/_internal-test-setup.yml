@@ -27,7 +27,7 @@ jobs:
       s3-sync-command: ${{ steps.setup-deployment-config.outputs.s3-sync-command }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Exercise Deployment Config
         id: setup-deployment-config
@@ -54,7 +54,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Exercise Environment Variables
         uses: ./composite/setup-environment-variables
